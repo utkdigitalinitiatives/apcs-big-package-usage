@@ -1,0 +1,774 @@
+---
+title: "Springer Usage Across UTK"
+author: "Alexander Harriman"
+date: "2024-12-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r, warning = FALSE}
+library(dplyr)
+library(tidyverse)
+library(gt)
+library(stringr)
+library(readxl)
+library(ggplot2)
+library(ggthemes)
+library(janitor)
+library(writexl)
+```
+
+
+
+# Load Data - UTK
+
+
+## TR_J1
+
+
+```{r}
+TR_J1 <- read_excel('Springer-TRJ1-Jan2022-Jun2025.xlsx') |>
+  mutate(Total_Usage = Reporting_Period_Total) |>
+  group_by(Title, Print_ISSN, Online_ISSN, Total_Usage) |>
+  summarise(`Jan-2022` = sum(`Jan-2022`, na.rm = TRUE),
+    `Feb-2022` = sum(`Feb-2022`, na.rm = TRUE),
+    `Mar-2022` = sum(`Mar-2022`, na.rm = TRUE),
+    `Apr-2022` = sum(`Apr-2022`, na.rm = TRUE),
+    `May-2022` = sum(`May-2022`, na.rm = TRUE),
+    `Jun-2022` = sum(`Jun-2022`, na.rm = TRUE),
+    `Jul-2022` = sum(`Jul-2022`, na.rm = TRUE),
+    `Aug-2022` = sum(`Aug-2022`, na.rm = TRUE),
+    `Sep-2022` = sum(`Sep-2022`, na.rm = TRUE),
+    `Oct-2022` = sum(`Oct-2022`, na.rm = TRUE),
+    `Nov-2022` = sum(`Nov-2022`, na.rm = TRUE),
+    `Dec-2022` = sum(`Dec-2022`, na.rm = TRUE),
+    `Jan-2023` = sum(`Jan-2023`, na.rm = TRUE),
+    `Feb-2023` = sum(`Feb-2023`, na.rm = TRUE),
+    `Mar-2023` = sum(`Mar-2023`, na.rm = TRUE),
+    `Apr-2023` = sum(`Apr-2023`, na.rm = TRUE),
+    `May-2023` = sum(`May-2023`, na.rm = TRUE),
+    `Jun-2023` = sum(`Jun-2023`, na.rm = TRUE),
+    `Jul-2023` = sum(`Jul-2023`, na.rm = TRUE),
+    `Aug-2023` = sum(`Aug-2023`, na.rm = TRUE),
+    `Sep-2023` = sum(`Sep-2023`, na.rm = TRUE),
+    `Oct-2023` = sum(`Oct-2023`, na.rm = TRUE),
+    `Nov-2023` = sum(`Nov-2023`, na.rm = TRUE),
+    `Dec-2023` = sum(`Dec-2023`, na.rm = TRUE),
+    `Jan-2024` = sum(`Jan-2024`, na.rm = TRUE),
+    `Feb-2024` = sum(`Feb-2024`, na.rm = TRUE),
+    `Mar-2024` = sum(`Mar-2024`, na.rm = TRUE),
+    `Apr-2024` = sum(`Apr-2024`, na.rm = TRUE),
+    `May-2024` = sum(`May-2024`, na.rm = TRUE),
+    `Jun-2024` = sum(`Jun-2024`, na.rm = TRUE),
+    `Jul-2024` = sum(`Jul-2024`, na.rm = TRUE),
+    `Aug-2024` = sum(`Aug-2024`, na.rm = TRUE),
+    `Sep-2024` = sum(`Sep-2024`, na.rm = TRUE),
+    `Oct-2024` = sum(`Oct-2024`, na.rm = TRUE),
+    `Nov-2024` = sum(`Nov-2024`, na.rm = TRUE),
+    `Dec-2024` = sum(`Dec-2024`, na.rm = TRUE),
+    `Jan-2025` = sum(`Jan-2025`, na.rm = TRUE),
+    `Feb-2025` = sum(`Feb-2025`, na.rm = TRUE),
+    `Mar-2025` = sum(`Mar-2025`, na.rm = TRUE),
+    `Apr-2025` = sum(`Apr-2025`, na.rm = TRUE),
+    `May-2025` = sum(`May-2025`, na.rm = TRUE),
+    `Jun-2025` = sum(`Jun-2025`, na.rm = TRUE))
+
+TR_J1
+```
+
+
+## TR_J3
+
+
+
+```{r}
+TR_J3 <- read_excel('Springer-TRJ3-Jan2022-Jun2025.xlsx') |>
+  mutate(Total_Usage = Reporting_Period_Total) |>
+  group_by(Title, Print_ISSN, Online_ISSN, Access_Type, Total_Usage) |>
+  summarise(`Jan-2022` = sum(`Jan-2022`, na.rm = TRUE),
+    `Feb-2022` = sum(`Feb-2022`, na.rm = TRUE),
+    `Mar-2022` = sum(`Mar-2022`, na.rm = TRUE),
+    `Apr-2022` = sum(`Apr-2022`, na.rm = TRUE),
+    `May-2022` = sum(`May-2022`, na.rm = TRUE),
+    `Jun-2022` = sum(`Jun-2022`, na.rm = TRUE),
+    `Jul-2022` = sum(`Jul-2022`, na.rm = TRUE),
+    `Aug-2022` = sum(`Aug-2022`, na.rm = TRUE),
+    `Sep-2022` = sum(`Sep-2022`, na.rm = TRUE),
+    `Oct-2022` = sum(`Oct-2022`, na.rm = TRUE),
+    `Nov-2022` = sum(`Nov-2022`, na.rm = TRUE),
+    `Dec-2022` = sum(`Dec-2022`, na.rm = TRUE),
+    `Jan-2023` = sum(`Jan-2023`, na.rm = TRUE),
+    `Feb-2023` = sum(`Feb-2023`, na.rm = TRUE),
+    `Mar-2023` = sum(`Mar-2023`, na.rm = TRUE),
+    `Apr-2023` = sum(`Apr-2023`, na.rm = TRUE),
+    `May-2023` = sum(`May-2023`, na.rm = TRUE),
+    `Jun-2023` = sum(`Jun-2023`, na.rm = TRUE),
+    `Jul-2023` = sum(`Jul-2023`, na.rm = TRUE),
+    `Aug-2023` = sum(`Aug-2023`, na.rm = TRUE),
+    `Sep-2023` = sum(`Sep-2023`, na.rm = TRUE),
+    `Oct-2023` = sum(`Oct-2023`, na.rm = TRUE),
+    `Nov-2023` = sum(`Nov-2023`, na.rm = TRUE),
+    `Dec-2023` = sum(`Dec-2023`, na.rm = TRUE),
+    `Jan-2024` = sum(`Jan-2024`, na.rm = TRUE),
+    `Feb-2024` = sum(`Feb-2024`, na.rm = TRUE),
+    `Mar-2024` = sum(`Mar-2024`, na.rm = TRUE),
+    `Apr-2024` = sum(`Apr-2024`, na.rm = TRUE),
+    `May-2024` = sum(`May-2024`, na.rm = TRUE),
+    `Jun-2024` = sum(`Jun-2024`, na.rm = TRUE),
+    `Jul-2024` = sum(`Jul-2024`, na.rm = TRUE),
+    `Aug-2024` = sum(`Aug-2024`, na.rm = TRUE),
+    `Sep-2024` = sum(`Sep-2024`, na.rm = TRUE),
+    `Oct-2024` = sum(`Oct-2024`, na.rm = TRUE),
+    `Nov-2024` = sum(`Nov-2024`, na.rm = TRUE),
+    `Dec-2024` = sum(`Dec-2024`, na.rm = TRUE),
+    `Jan-2025` = sum(`Jan-2025`, na.rm = TRUE),
+    `Feb-2025` = sum(`Feb-2025`, na.rm = TRUE),
+    `Mar-2025` = sum(`Mar-2025`, na.rm = TRUE),
+    `Apr-2025` = sum(`Apr-2025`, na.rm = TRUE),
+    `May-2025` = sum(`May-2025`, na.rm = TRUE),
+    `Jun-2025` = sum(`Jun-2025`, na.rm = TRUE))
+
+TR_J3
+```
+
+
+
+## TR_J4
+
+
+```{r}
+TR_J4 <- read_excel('Springer-TRJ4-Jan2022-Jun2025.xlsx') |>
+  mutate(Total_Usage = Reporting_Period_Total) |>
+  group_by(Title, Print_ISSN, Online_ISSN, YOP, Total_Usage) |>
+  summarise(`Jan-2022` = sum(`Jan-2022`, na.rm = TRUE),
+    `Feb-2022` = sum(`Feb-2022`, na.rm = TRUE),
+    `Mar-2022` = sum(`Mar-2022`, na.rm = TRUE),
+    `Apr-2022` = sum(`Apr-2022`, na.rm = TRUE),
+    `May-2022` = sum(`May-2022`, na.rm = TRUE),
+    `Jun-2022` = sum(`Jun-2022`, na.rm = TRUE),
+    `Jul-2022` = sum(`Jul-2022`, na.rm = TRUE),
+    `Aug-2022` = sum(`Aug-2022`, na.rm = TRUE),
+    `Sep-2022` = sum(`Sep-2022`, na.rm = TRUE),
+    `Oct-2022` = sum(`Oct-2022`, na.rm = TRUE),
+    `Nov-2022` = sum(`Nov-2022`, na.rm = TRUE),
+    `Dec-2022` = sum(`Dec-2022`, na.rm = TRUE),
+    `Jan-2023` = sum(`Jan-2023`, na.rm = TRUE),
+    `Feb-2023` = sum(`Feb-2023`, na.rm = TRUE),
+    `Mar-2023` = sum(`Mar-2023`, na.rm = TRUE),
+    `Apr-2023` = sum(`Apr-2023`, na.rm = TRUE),
+    `May-2023` = sum(`May-2023`, na.rm = TRUE),
+    `Jun-2023` = sum(`Jun-2023`, na.rm = TRUE),
+    `Jul-2023` = sum(`Jul-2023`, na.rm = TRUE),
+    `Aug-2023` = sum(`Aug-2023`, na.rm = TRUE),
+    `Sep-2023` = sum(`Sep-2023`, na.rm = TRUE),
+    `Oct-2023` = sum(`Oct-2023`, na.rm = TRUE),
+    `Nov-2023` = sum(`Nov-2023`, na.rm = TRUE),
+    `Dec-2023` = sum(`Dec-2023`, na.rm = TRUE),
+    `Jan-2024` = sum(`Jan-2024`, na.rm = TRUE),
+    `Feb-2024` = sum(`Feb-2024`, na.rm = TRUE),
+    `Mar-2024` = sum(`Mar-2024`, na.rm = TRUE),
+    `Apr-2024` = sum(`Apr-2024`, na.rm = TRUE),
+    `May-2024` = sum(`May-2024`, na.rm = TRUE),
+    `Jun-2024` = sum(`Jun-2024`, na.rm = TRUE),
+    `Jul-2024` = sum(`Jul-2024`, na.rm = TRUE),
+    `Aug-2024` = sum(`Aug-2024`, na.rm = TRUE),
+    `Sep-2024` = sum(`Sep-2024`, na.rm = TRUE),
+    `Oct-2024` = sum(`Oct-2024`, na.rm = TRUE),
+    `Nov-2024` = sum(`Nov-2024`, na.rm = TRUE),
+    `Dec-2024` = sum(`Dec-2024`, na.rm = TRUE),
+    `Jan-2025` = sum(`Jan-2025`, na.rm = TRUE),
+    `Feb-2025` = sum(`Feb-2025`, na.rm = TRUE),
+    `Mar-2025` = sum(`Mar-2025`, na.rm = TRUE),
+    `Apr-2025` = sum(`Apr-2025`, na.rm = TRUE),
+    `May-2025` = sum(`May-2025`, na.rm = TRUE),
+    `Jun-2025` = sum(`Jun-2025`, na.rm = TRUE))
+
+TR_J4
+```
+
+
+
+
+# Import the Journal Price List from Springer's Website
+
+
+```{r, warning = FALSE}
+priceList <- read_excel('Springer Journal Price List.xlsx', skip = 4)
+
+priceList
+```
+
+
+
+## Clean Up the Price List
+
+
+```{r}
+cleanPriceList <- priceList |>
+  select(Title, `ISSN print`, `ISSN electronic`, `Institutional Price electronic only USD`) |>
+  mutate(isOA = 'No')
+
+colnames(cleanPriceList) <- c('Title', 'Print_ISSN', 'Online_ISSN', 'Price', 'isOA')
+
+cleanPriceList
+```
+
+
+
+## Add in the OA Titles and Combine Lists
+
+```{r}
+oa <- read_excel('Springer OA Journal List.xlsx') |>
+  select(Title, `ISSN print`, `ISSN electronic`) |>
+  mutate(Price = 0,
+         isOA = 'Yes')
+
+colnames(oa) <- c('Title', 'Print_ISSN', 'Online_ISSN', 'Price', 'isOA')
+
+
+allTitles <- rbind(cleanPriceList, oa)
+
+allTitles
+```
+
+
+
+
+
+## Add in Institution Individual Title Prices
+
+
+Some titles only have prices available via an institutional agreement. For those titles, the prices are available on SharePoint.
+
+
+```{r}
+indyPrices <- read_excel('Individual Prices in Institutional Agreement.xlsx')
+
+indyPrices
+```
+
+
+
+```{r}
+cleanAllTitles <- allTitles |>
+  mutate(Price = case_when(
+    Title == 'Acta Pharmacologica Sinica' ~ 1212.87,
+    Title == 'Acta Politica' ~ 949.57,
+    Title == 'Bone Marrow Transplantation' ~ 1714.47,
+    Title == 'British Dental Journal' ~ 1318.91,
+    Title == 'British Journal of Cancer' ~ 1719.23,
+    Title == 'Cancer Gene Therapy' ~ 742.27,
+    Title == 'Cell Death & Differentation' ~ 965.06,
+    Title == 'Cell Research' ~ 1388.03,
+    Title == 'Cellular & Molecular Immunology' ~ 476.58,
+    Title == 'Comparative European Politics' ~ 1832.48,
+    Title == 'Development' ~ 882.86,
+    Title == 'Eastern Economic Journal' ~ 233.51,
+    Title == 'European Journal of Clinical Nutrition' ~ 966.25,
+    Title == 'European Journal of Human Genetics' ~ 1037.72,
+    Title == 'Evidence-Based Dentistry' ~ 343.13,
+    Title == 'Eye' ~ 785.15,
+    Title == 'Gene Therapy' ~ 1471.42,
+    Title == 'Genes & Immunity' ~ 442.02,
+    Title == 'Heredity' ~ 571.88,
+    Title == 'Hypertension Research' ~ 417,
+    Title == 'Interest Groups & Advocacy' ~ 1135.68,
+    Title == 'International Journal of Impotence Research' ~ 334.78,
+    Title == 'International Journal of Obesity' ~ 1291.50,
+    Title == 'Journal of Exposure Science & Environmental Epidemiology' ~ 617.16,
+    Title == 'Journal of Human Genetics' ~ 505.16,
+    Title == 'Journal of Human Hypertension' ~ 551.64,
+    Title == 'Journal of International Business Studies' ~ 617.16,
+    Title == 'Journal of Perinatology' ~ 294.28,
+    Title == 'Lab Animal' ~ 1452.36,
+    Title == 'Leukemia' ~ 2019.48,
+    Title == 'Molecular Psychiatry' ~ 990.08,
+    Title == 'Nature Biotechnology' ~ 3531.99,
+    Title == 'Nature Catalysis' ~ 12946.95,
+    Title == 'Nature Cell Biology' ~ 2875.94,
+    Title == 'Nature Chemical Biology' ~ 4321.87,
+    Title == 'Nature Chemistry' ~ 4445.13,
+    Title == 'Nature Climate Change' ~ 3355.72,
+    Title == 'Nature Ecology & Evolution' ~ 12946.95,
+    Title == 'Nature Electronics' ~ 13331.47,
+    Title == 'Nature Energy' ~ 3199.33,
+    Title == 'Nature Genetics' ~ 3948.14,
+    Title == 'Nature Geoscience' ~ 2931.62,
+    Title == 'Nature Immunology' ~ 3962.35,
+    Title == 'Nature Materials' ~ 3199.33,
+    Title == 'Nature Medicine' ~ 3660.54,
+    Title == 'Nature Methods' ~ 12448.74,
+    Title == 'Nature Microbiology' ~ 3591.61,
+    Title == 'Nature Nanotechnology' ~ 3199.33,
+    Title == 'Nature Neuroscience' ~ 3418,
+    Title == 'Nature Photonics' ~ 3590.30,
+    Title == 'Nature Physics' ~ 3913.66,
+    Title == 'Nature Plants' ~ 3657.88,
+    Title == 'Nature Protocols' ~ 3139.69,
+    Title == 'Nature Reviews Cancer' ~ 2995.25,
+    Title == 'Nature Reviews Chemistry' ~ 11923.91,
+    Title == 'Nature Reviews Clinical Oncology' ~ 13418.09,
+    Title == 'Nature Reviews Drug Discovery' ~ 3138.36,
+    Title == 'Nature Reviews Endocrinology' ~ 2995.23,
+    Title == 'Nature Reviews Gastroenterology & Hepato' ~ 13418.09,
+    Title == 'Nature Reviews Genetics' ~ 2996.54,
+    Title == 'Nature Reviews Immunology' ~ 2875.94,
+    Title == 'Nature Reviews Materials' ~ 2931.62,
+    Title == 'Nature Reviews Microbiology' ~ 2848.12,
+    Title == 'Nature Reviews Molecular Cell Biology' ~ 2875.94,
+    Title == 'Nature Reviews Neuroscience' ~ 2996.54,
+    Title == 'Nature Reviews Rheumatology' ~ 2996.54,
+    Title == 'Nature Reviews Urology' ~ 2967.40,
+    Title == 'Nature Structural & Molecular Biology' ~ 2875.93,
+    Title == 'Nature' ~ 11487.88,
+    Title == 'Neuropsychopharmacology' ~ 2250.62,
+    Title == 'Oncogene' ~ 6128.74,
+    Title == 'Pediatric Research' ~ 951.95,
+    Title == 'Polymer Journal' ~ 1389.20,
+    Title == 'Postdigital Science and Education' ~ 391.88,
+    Title == 'postmedieval' ~ 1020.52,
+    Title == 'Prostate Cancer and Prostatic Diseases' ~ 312.16,
+    Title == 'Scientific American' ~ 2315.85,
+    Title == 'The American Journal of Psychoanalysis' ~ 881.66,
+    Title == 'The Journal of Antibiotics' ~ 483.73,
+    Title == 'The Pharmacogenomics Journal' ~ 901.92,
+    Title == 'Tropical Ecology' ~ 310.99,
+    Title == 'Zeitschrift für Literaturwissenschaft und Linguistik' ~ 86.15,
+    .default = Price
+  ))
+```
+
+
+
+
+
+
+## Join Price to Usage
+
+
+
+```{r, warning = FALSE}
+fullTR_J1 <- left_join(TR_J1, cleanAllTitles, by = 'Online_ISSN') |>
+  select(Title.x, Online_ISSN, Price, Total_Usage, isOA,
+         `Jan-2022`, `Feb-2022`, `Mar-2022`, `Apr-2022`, `May-2022`, `Jun-2022`, `Jul-2022`, `Aug-2022`, `Sep-2022`, `Oct-2022`, `Nov-2022`, `Dec-2022`,
+         `Jan-2023`, `Feb-2023`, `Mar-2023`, `Apr-2023`, `May-2023`, `Jun-2023`, `Jul-2023`, `Aug-2023`, `Sep-2023`, `Oct-2023`, `Nov-2023`, `Dec-2023`,
+         `Jan-2024`, `Feb-2024`, `Mar-2024`, `Apr-2024`, `May-2024`, `Jun-2024`, `Jul-2024`, `Aug-2024`, `Sep-2024`, `Oct-2024`, `Nov-2024`, `Dec-2024`,
+         `Jan-2025`, `Feb-2025`, `Mar-2025`, `Apr-2025`, `May-2025`, `Jun-2025`)
+
+fullTR_J3 <- left_join(TR_J3, cleanAllTitles, by = 'Online_ISSN') |>
+  select(Title.x, Online_ISSN, Access_Type, Price, Total_Usage, isOA,
+         `Jan-2022`, `Feb-2022`, `Mar-2022`, `Apr-2022`, `May-2022`, `Jun-2022`, `Jul-2022`, `Aug-2022`, `Sep-2022`, `Oct-2022`, `Nov-2022`, `Dec-2022`,
+         `Jan-2023`, `Feb-2023`, `Mar-2023`, `Apr-2023`, `May-2023`, `Jun-2023`, `Jul-2023`, `Aug-2023`, `Sep-2023`, `Oct-2023`, `Nov-2023`, `Dec-2023`,
+         `Jan-2024`, `Feb-2024`, `Mar-2024`, `Apr-2024`, `May-2024`, `Jun-2024`, `Jul-2024`, `Aug-2024`, `Sep-2024`, `Oct-2024`, `Nov-2024`, `Dec-2024`,
+         `Jan-2025`, `Feb-2025`, `Mar-2025`, `Apr-2025`, `May-2025`, `Jun-2025`)
+
+fullTR_J4 <- left_join(TR_J4, cleanAllTitles, by = 'Online_ISSN') |>
+  select(Title.x, Online_ISSN, YOP, Price, Total_Usage, isOA,
+         `Jan-2022`, `Feb-2022`, `Mar-2022`, `Apr-2022`, `May-2022`, `Jun-2022`, `Jul-2022`, `Aug-2022`, `Sep-2022`, `Oct-2022`, `Nov-2022`, `Dec-2022`,
+         `Jan-2023`, `Feb-2023`, `Mar-2023`, `Apr-2023`, `May-2023`, `Jun-2023`, `Jul-2023`, `Aug-2023`, `Sep-2023`, `Oct-2023`, `Nov-2023`, `Dec-2023`,
+         `Jan-2024`, `Feb-2024`, `Mar-2024`, `Apr-2024`, `May-2024`, `Jun-2024`, `Jul-2024`, `Aug-2024`, `Sep-2024`, `Oct-2024`, `Nov-2024`, `Dec-2024`,
+         `Jan-2025`, `Feb-2025`, `Mar-2025`, `Apr-2025`, `May-2025`, `Jun-2025`)
+```
+
+
+
+
+
+
+
+
+## Load in Total Price of Springer Package
+
+
+This comes from the previous order cost.
+
+
+
+```{r}
+springerPrice <- data.frame(
+  Location = c('UT Knoxville'),
+  Price = c(794355.77)
+)
+```
+
+
+
+## Get Mean Prices per Campus
+
+This will fill in any gaps in price below.
+
+```{r}
+utkMedPrice <- mean(cleanPriceList$Price, na.rm = TRUE)
+
+utkMedPrice
+```
+
+
+
+# Look at Usage Trends
+
+
+
+## Grand Total Usage
+
+
+
+```{r}
+TR_J4_Complete <- fullTR_J4 |>
+  group_by(Title.x, YOP, Price, isOA) |>
+  summarise(`Jan-2022` = sum(`Jan-2022`, na.rm = TRUE),
+    `Feb-2022` = sum(`Feb-2022`, na.rm = TRUE),
+    `Mar-2022` = sum(`Mar-2022`, na.rm = TRUE),
+    `Apr-2022` = sum(`Apr-2022`, na.rm = TRUE),
+    `May-2022` = sum(`May-2022`, na.rm = TRUE),
+    `Jun-2022` = sum(`Jun-2022`, na.rm = TRUE),
+    `Jul-2022` = sum(`Jul-2022`, na.rm = TRUE),
+    `Aug-2022` = sum(`Aug-2022`, na.rm = TRUE),
+    `Sep-2022` = sum(`Sep-2022`, na.rm = TRUE),
+    `Oct-2022` = sum(`Oct-2022`, na.rm = TRUE),
+    `Nov-2022` = sum(`Nov-2022`, na.rm = TRUE),
+    `Dec-2022` = sum(`Dec-2022`, na.rm = TRUE),
+    `Jan-2023` = sum(`Jan-2023`, na.rm = TRUE),
+    `Feb-2023` = sum(`Feb-2023`, na.rm = TRUE),
+    `Mar-2023` = sum(`Mar-2023`, na.rm = TRUE),
+    `Apr-2023` = sum(`Apr-2023`, na.rm = TRUE),
+    `May-2023` = sum(`May-2023`, na.rm = TRUE),
+    `Jun-2023` = sum(`Jun-2023`, na.rm = TRUE),
+    `Jul-2023` = sum(`Jul-2023`, na.rm = TRUE),
+    `Aug-2023` = sum(`Aug-2023`, na.rm = TRUE),
+    `Sep-2023` = sum(`Sep-2023`, na.rm = TRUE),
+    `Oct-2023` = sum(`Oct-2023`, na.rm = TRUE),
+    `Nov-2023` = sum(`Nov-2023`, na.rm = TRUE),
+    `Dec-2023` = sum(`Dec-2023`, na.rm = TRUE),
+    `Jan-2024` = sum(`Jan-2024`, na.rm = TRUE),
+    `Feb-2024` = sum(`Feb-2024`, na.rm = TRUE),
+    `Mar-2024` = sum(`Mar-2024`, na.rm = TRUE),
+    `Apr-2024` = sum(`Apr-2024`, na.rm = TRUE),
+    `May-2024` = sum(`May-2024`, na.rm = TRUE),
+    `Jun-2024` = sum(`Jun-2024`, na.rm = TRUE),
+    `Jul-2024` = sum(`Jul-2024`, na.rm = TRUE),
+    `Aug-2024` = sum(`Aug-2024`, na.rm = TRUE),
+    `Sep-2024` = sum(`Sep-2024`, na.rm = TRUE),
+    `Oct-2024` = sum(`Oct-2024`, na.rm = TRUE),
+    `Nov-2024` = sum(`Nov-2024`, na.rm = TRUE),
+    `Dec-2024` = sum(`Dec-2024`, na.rm = TRUE),
+    `Jan-2025` = sum(`Jan-2025`, na.rm = TRUE),
+    `Feb-2025` = sum(`Feb-2025`, na.rm = TRUE),
+    `Mar-2025` = sum(`Mar-2025`, na.rm = TRUE),
+    `Apr-2025` = sum(`Apr-2025`, na.rm = TRUE),
+    `May-2025` = sum(`May-2025`, na.rm = TRUE),
+    `Jun-2025` = sum(`Jun-2025`, na.rm = TRUE)) |>
+  ungroup() |>  
+  mutate(Price = case_when(
+    is.na(Price) == TRUE ~ utkMedPrice,
+    .default = Price
+  )) |>
+  mutate(usage22 = `Jan-2022` + `Feb-2022` + `Mar-2022` + `Apr-2022` + `May-2022` + `Jun-2022` + `Jul-2022` + `Aug-2022` + `Sep-2022` + `Oct-2022` + `Nov-2022` + `Dec-2022`,
+         usage23 = `Jan-2023` + `Feb-2023` + `Mar-2023` + `Apr-2023` + `May-2023` + `Jun-2023` + `Jul-2023` + `Aug-2023` + `Sep-2023` + `Oct-2023` + `Nov-2023` + `Dec-2023`,
+         usage24 = `Jan-2024` + `Feb-2024` + `Mar-2024` + `Apr-2024` + `May-2024` + `Jun-2024` + `Jul-2024` + `Aug-2024` + `Sep-2024` + `Oct-2024` + `Nov-2024` + `Dec-2024`,
+         usage25 = `Jan-2025` + `Feb-2025` + `Mar-2025` + `Apr-2025` + `May-2025` + `Jun-2025`) |>
+  mutate(Total_Usage = usage22 + usage23 + usage24 + usage25) |>
+  mutate(isCC22 = ifelse((YOP >= 2018 & YOP <= 2022) | YOP == 9999, 'Yes', 'No'),
+         isCC23 = ifelse((YOP >= 2019 & YOP <= 2023) | YOP == 9999, 'Yes', 'No'),
+         isCC24 = ifelse((YOP >= 2020 & YOP <= 2024) | YOP == 9999, 'Yes', 'No'),
+         isCC25 = ifelse(YOP >= 2021, 'Yes', 'No')) |>
+  mutate(isBackfile22 = ifelse(YOP > 1997 & YOP < 2018, 'Yes', 'No'),
+         isBackfile23 = ifelse(YOP > 1997 & YOP < 2019, 'Yes', 'No'),
+         isBackfile24 = ifelse(YOP > 1997 & YOP < 2020, 'Yes', 'No'),
+         isBackfile25 = ifelse(YOP > 1997 & YOP < 2021, 'Yes', 'No')) |>
+  mutate(isTrueBackfile = ifelse(YOP <= 1997, 'Yes', 'No')) |>
+  mutate(currentYearUsage = case_when(
+    YOP == 2022 ~ usage22,
+    YOP == 2023 ~ usage23,
+    YOP == 2024 ~ usage24,
+    YOP == 2025 ~ usage25,
+    .default = 0),
+         ccClearanceUsage = case_when(
+           isCC22 == 'Yes' & isCC23 == 'No' & isCC24 == 'No' & isCC25 == 'No' ~ usage22,
+           isCC22 == 'Yes' & isCC23 == 'Yes' & isCC24 == 'No' & isCC25 == 'No' ~ usage22 + usage23,
+           isCC22 == 'Yes' & isCC23 == 'Yes' & isCC24 == 'Yes' & isCC25 == 'No' ~ usage22 + usage23 + usage24,
+           isCC22 == 'Yes' & isCC23 == 'Yes' & isCC24 == 'Yes' & isCC25 == 'Yes' ~ usage22 + usage23 + usage24 + usage25,
+           isCC22 == 'No' & isCC23 == 'Yes' & isCC24 == 'Yes' & isCC25 == 'Yes' ~ usage23 + usage24 + usage25,
+           isCC22 == 'No' & isCC23 == 'No' & isCC24 == 'Yes' & isCC25 == 'Yes' ~ usage24 + usage25,
+           isCC22 == 'No' & isCC23 == 'No' & isCC24 == 'No' & isCC25 == 'Yes' ~ usage25,
+           isCC22 == 'No' & isCC23 == 'No' & isCC24 == 'No' & isCC25 == 'No' ~ 0,
+           .default = NA
+         ),
+        backfileUsage = case_when(
+           isBackfile22 == 'Yes' & isBackfile23 == 'No' & isBackfile24 == 'No' & isBackfile25 == 'No' ~ usage22,
+           isBackfile22 == 'Yes' & isBackfile23 == 'Yes' & isBackfile24 == 'No' & isBackfile25 == 'No' ~ usage22 + usage23,
+           isBackfile22 == 'Yes' & isBackfile23 == 'Yes' & isBackfile24 == 'Yes' & isBackfile25 == 'No' ~ usage22 + usage23 + usage24,
+           isBackfile22 == 'Yes' & isBackfile23 == 'Yes' & isBackfile24 == 'Yes' & isBackfile25 == 'Yes' ~ usage22 + usage23 + usage24 + usage25,
+           isBackfile22 == 'No' & isBackfile23 == 'Yes' & isBackfile24 == 'Yes' & isBackfile25 == 'Yes' ~ usage23 + usage24 + usage25,
+           isBackfile22 == 'No' & isBackfile23 == 'No' & isBackfile24 == 'Yes' & isBackfile25 == 'Yes' ~ usage24 + usage25,
+           isBackfile22 == 'No' & isBackfile23 == 'No' & isBackfile24 == 'No' & isBackfile25 == 'Yes' ~ usage25,
+           isBackfile22 == 'No' & isBackfile23 == 'No' & isBackfile24 == 'No' & isBackfile25 == 'No' ~ 0,
+           .default = NA          
+        ),
+        trueBackFileUsage = ifelse(isTrueBackfile == 'Yes', Total_Usage, 0)
+  )
+
+TR_J4_Complete |>
+  arrange(desc(ccClearanceUsage))
+```
+
+
+
+
+
+
+# TR_J1: Usage by Package Type and Individual Title Cost/Use
+
+
+
+```{r}
+TR_J1_Complete <- fullTR_J1 |>
+  group_by(Title.x, Price, isOA) |>
+  summarise(`Jan-2022` = sum(`Jan-2022`, na.rm = TRUE),
+    `Feb-2022` = sum(`Feb-2022`, na.rm = TRUE),
+    `Mar-2022` = sum(`Mar-2022`, na.rm = TRUE),
+    `Apr-2022` = sum(`Apr-2022`, na.rm = TRUE),
+    `May-2022` = sum(`May-2022`, na.rm = TRUE),
+    `Jun-2022` = sum(`Jun-2022`, na.rm = TRUE),
+    `Jul-2022` = sum(`Jul-2022`, na.rm = TRUE),
+    `Aug-2022` = sum(`Aug-2022`, na.rm = TRUE),
+    `Sep-2022` = sum(`Sep-2022`, na.rm = TRUE),
+    `Oct-2022` = sum(`Oct-2022`, na.rm = TRUE),
+    `Nov-2022` = sum(`Nov-2022`, na.rm = TRUE),
+    `Dec-2022` = sum(`Dec-2022`, na.rm = TRUE),
+    `Jan-2023` = sum(`Jan-2023`, na.rm = TRUE),
+    `Feb-2023` = sum(`Feb-2023`, na.rm = TRUE),
+    `Mar-2023` = sum(`Mar-2023`, na.rm = TRUE),
+    `Apr-2023` = sum(`Apr-2023`, na.rm = TRUE),
+    `May-2023` = sum(`May-2023`, na.rm = TRUE),
+    `Jun-2023` = sum(`Jun-2023`, na.rm = TRUE),
+    `Jul-2023` = sum(`Jul-2023`, na.rm = TRUE),
+    `Aug-2023` = sum(`Aug-2023`, na.rm = TRUE),
+    `Sep-2023` = sum(`Sep-2023`, na.rm = TRUE),
+    `Oct-2023` = sum(`Oct-2023`, na.rm = TRUE),
+    `Nov-2023` = sum(`Nov-2023`, na.rm = TRUE),
+    `Dec-2023` = sum(`Dec-2023`, na.rm = TRUE),
+    `Jan-2024` = sum(`Jan-2024`, na.rm = TRUE),
+    `Feb-2024` = sum(`Feb-2024`, na.rm = TRUE),
+    `Mar-2024` = sum(`Mar-2024`, na.rm = TRUE),
+    `Apr-2024` = sum(`Apr-2024`, na.rm = TRUE),
+    `May-2024` = sum(`May-2024`, na.rm = TRUE),
+    `Jun-2024` = sum(`Jun-2024`, na.rm = TRUE),
+    `Jul-2024` = sum(`Jul-2024`, na.rm = TRUE),
+    `Aug-2024` = sum(`Aug-2024`, na.rm = TRUE),
+    `Sep-2024` = sum(`Sep-2024`, na.rm = TRUE),
+    `Oct-2024` = sum(`Oct-2024`, na.rm = TRUE),
+    `Nov-2024` = sum(`Nov-2024`, na.rm = TRUE),
+    `Dec-2024` = sum(`Dec-2024`, na.rm = TRUE),
+    `Jan-2025` = sum(`Jan-2025`, na.rm = TRUE),
+    `Feb-2025` = sum(`Feb-2025`, na.rm = TRUE),
+    `Mar-2025` = sum(`Mar-2025`, na.rm = TRUE),
+    `Apr-2025` = sum(`Apr-2025`, na.rm = TRUE),
+    `May-2025` = sum(`May-2025`, na.rm = TRUE),
+    `Jun-2025` = sum(`Jun-2025`, na.rm = TRUE)) |>
+  ungroup() |>
+  mutate(Price = case_when(
+    is.na(Price) == TRUE ~ utkMedPrice,
+    .default = Price
+  )) |>
+  mutate(usage22 = `Jan-2022` + `Feb-2022` + `Mar-2022` + `Apr-2022` + `May-2022` + `Jun-2022` + `Jul-2022` + `Aug-2022` + `Sep-2022` + `Oct-2022` + `Nov-2022` + `Dec-2022`,
+         usage23 = `Jan-2023` + `Feb-2023` + `Mar-2023` + `Apr-2023` + `May-2023` + `Jun-2023` + `Jul-2023` + `Aug-2023` + `Sep-2023` + `Oct-2023` + `Nov-2023` + `Dec-2023`,
+         usage24 = `Jan-2024` + `Feb-2024` + `Mar-2024` + `Apr-2024` + `May-2024` + `Jun-2024` + `Jul-2024` + `Aug-2024` + `Sep-2024` + `Oct-2024` + `Nov-2024` + `Dec-2024`,
+         usage25 = `Jan-2025` + `Feb-2025` + `Mar-2025` + `Apr-2025` + `May-2025` + `Jun-2025`) |>
+  mutate(Total_Usage = usage22 + usage23 + usage24 + usage25) |>
+  mutate(costUse = Price / (Total_Usage / 3.5))|>
+  mutate(costUseBucket = case_when(
+    isOA == 'Yes' ~ 'Full Open Access',
+    costUse < 20 ~ 'Under $20',
+    costUse >= 20 ~ 'Over $20'
+  )
+)
+
+TR_J1_Complete
+```
+
+
+# TR_J3: Usage by OA Type, Including OA Titles
+
+
+
+```{r}
+TR_J3_Complete <- fullTR_J3 |>
+  group_by(Title.x, Access_Type) |>
+  summarise(`Jan-2022` = sum(`Jan-2022`, na.rm = TRUE),
+    `Feb-2022` = sum(`Feb-2022`, na.rm = TRUE),
+    `Mar-2022` = sum(`Mar-2022`, na.rm = TRUE),
+    `Apr-2022` = sum(`Apr-2022`, na.rm = TRUE),
+    `May-2022` = sum(`May-2022`, na.rm = TRUE),
+    `Jun-2022` = sum(`Jun-2022`, na.rm = TRUE),
+    `Jul-2022` = sum(`Jul-2022`, na.rm = TRUE),
+    `Aug-2022` = sum(`Aug-2022`, na.rm = TRUE),
+    `Sep-2022` = sum(`Sep-2022`, na.rm = TRUE),
+    `Oct-2022` = sum(`Oct-2022`, na.rm = TRUE),
+    `Nov-2022` = sum(`Nov-2022`, na.rm = TRUE),
+    `Dec-2022` = sum(`Dec-2022`, na.rm = TRUE),
+    `Jan-2023` = sum(`Jan-2023`, na.rm = TRUE),
+    `Feb-2023` = sum(`Feb-2023`, na.rm = TRUE),
+    `Mar-2023` = sum(`Mar-2023`, na.rm = TRUE),
+    `Apr-2023` = sum(`Apr-2023`, na.rm = TRUE),
+    `May-2023` = sum(`May-2023`, na.rm = TRUE),
+    `Jun-2023` = sum(`Jun-2023`, na.rm = TRUE),
+    `Jul-2023` = sum(`Jul-2023`, na.rm = TRUE),
+    `Aug-2023` = sum(`Aug-2023`, na.rm = TRUE),
+    `Sep-2023` = sum(`Sep-2023`, na.rm = TRUE),
+    `Oct-2023` = sum(`Oct-2023`, na.rm = TRUE),
+    `Nov-2023` = sum(`Nov-2023`, na.rm = TRUE),
+    `Dec-2023` = sum(`Dec-2023`, na.rm = TRUE),
+    `Jan-2024` = sum(`Jan-2024`, na.rm = TRUE),
+    `Feb-2024` = sum(`Feb-2024`, na.rm = TRUE),
+    `Mar-2024` = sum(`Mar-2024`, na.rm = TRUE),
+    `Apr-2024` = sum(`Apr-2024`, na.rm = TRUE),
+    `May-2024` = sum(`May-2024`, na.rm = TRUE),
+    `Jun-2024` = sum(`Jun-2024`, na.rm = TRUE),
+    `Jul-2024` = sum(`Jul-2024`, na.rm = TRUE),
+    `Aug-2024` = sum(`Aug-2024`, na.rm = TRUE),
+    `Sep-2024` = sum(`Sep-2024`, na.rm = TRUE),
+    `Oct-2024` = sum(`Oct-2024`, na.rm = TRUE),
+    `Nov-2024` = sum(`Nov-2024`, na.rm = TRUE),
+    `Dec-2024` = sum(`Dec-2024`, na.rm = TRUE),
+    `Jan-2025` = sum(`Jan-2025`, na.rm = TRUE),
+    `Feb-2025` = sum(`Feb-2025`, na.rm = TRUE),
+    `Mar-2025` = sum(`Mar-2025`, na.rm = TRUE),
+    `Apr-2025` = sum(`Apr-2025`, na.rm = TRUE),
+    `May-2025` = sum(`May-2025`, na.rm = TRUE),
+    `Jun-2025` = sum(`Jun-2025`, na.rm = TRUE)) |>
+  ungroup() |>
+  mutate(usage22 = `Jan-2022` + `Feb-2022` + `Mar-2022` + `Apr-2022` + `May-2022` + `Jun-2022` + `Jul-2022` + `Aug-2022` + `Sep-2022` + `Oct-2022` + `Nov-2022` + `Dec-2022`,
+         usage23 = `Jan-2023` + `Feb-2023` + `Mar-2023` + `Apr-2023` + `May-2023` + `Jun-2023` + `Jul-2023` + `Aug-2023` + `Sep-2023` + `Oct-2023` + `Nov-2023` + `Dec-2023`,
+         usage24 = `Jan-2024` + `Feb-2024` + `Mar-2024` + `Apr-2024` + `May-2024` + `Jun-2024` + `Jul-2024` + `Aug-2024` + `Sep-2024` + `Oct-2024` + `Nov-2024` + `Dec-2024`,
+         usage25 = `Jan-2025` + `Feb-2025` + `Mar-2025` + `Apr-2025` + `May-2025` + `Jun-2025`) |>
+  mutate(Total_Usage = usage22 + usage23 + usage24 + usage25)
+
+TR_J3_Complete
+```
+
+
+
+# Add the Cost/Use Bucket and the Price from TR_Complete to TR_J4_Complete
+
+
+
+```{r, warning = FALSE}
+smallTRComplete <- TR_J1_Complete |>
+  select(Title.x, costUseBucket, Price, isOA)
+
+TR_J4_Export <- left_join(TR_J4_Complete, smallTRComplete, by = c('Title.x' = 'Title.x', 'Price' = 'Price', 'isOA' = 'isOA'))
+```
+
+
+# Create the Copyright Clearance Bucket Column
+
+
+```{r}
+TR_J4_Buckets <- TR_J4_Export |>
+  group_by(Title.x, Price, isOA) |>
+  summarise(copyrightClearanceUsage = sum(ccClearanceUsage)) |>
+  mutate(ccCostUse = Price / (copyrightClearanceUsage / 3.5)) |>
+  mutate(ccCostUseBucket = case_when(
+    isOA == 'Yes' ~ 'Full Open Access',
+    ccCostUse < 20 ~ 'Under $20',
+    ccCostUse >= 20 ~ 'Over $20'
+  )) |>
+  mutate(ccCostUse = ifelse(is.infinite(ccCostUse) == TRUE, 0, ccCostUse))
+```
+
+```{r}
+TR_J4_Export_Mid <- left_join(TR_J4_Export, TR_J4_Buckets, by = c('Title.x' = 'Title.x', 'Price' = 'Price')) 
+```
+
+
+# Clean up the Cost/Use Buckets in TR_J4
+
+```{r}
+TR_J4_Export_Final <- TR_J4_Export_Mid |>
+  mutate(costUseBucket = case_when(
+    is.na(costUseBucket) == TRUE & (Price / (Total_Usage / 3.5)) > 20 ~ 'Over $20',
+    is.na(costUseBucket) == TRUE & (Price / (Total_Usage / 3.5)) < 20 ~ 'Under $20',
+    .default = costUseBucket
+  ))
+```
+
+
+# Export the Data
+
+```{r}
+write_xlsx(TR_J4_Export_Final, 'Springer Usage by Year of Publishing.xlsx')
+```
+
+
+# TR_Complete: Cost/Use by Campus
+
+
+
+## TR_Complete: Total Usage by Campus
+
+
+```{r}
+TR_Complete_Usage = TR_J1_Complete |>
+  group_by() |>
+  summarise(Titles = length(unique(Title.x)),
+            Usage = sum(Total_Usage)) |>
+  mutate(Location = 'UT Knoxville')
+
+TR_Complete_Usage
+```
+
+
+## Compare Total Usage to the Total Cost
+
+
+```{r}
+costPerUseTotal <- inner_join(springerPrice, TR_Complete_Usage, by = 'Location') |>
+  mutate(costUse = Price / (Usage / 3.5),
+         costTitle = Price / Titles)
+
+costPerUseTotal
+```
+
+
+
+
+```{r}
+write_xlsx(costPerUseTotal, 'Springer Package Cost Per Use Summary.xlsx')
+```
+
+
+
+# Pivot Tables Longer for Line Graphs
+
+
+
+```{r}
+TR_Complete_Longer <- TR_J1_Complete |>
+  pivot_longer(cols = contains('-'),
+               names_to = 'Month',
+               values_to = 'Usage')
+
+write_xlsx(TR_Complete_Longer, 'Springer Title Use and Title Cost Per Use.xlsx')
+```
+
+
+
+```{r}
+TR_Complete_Longer_3 <- TR_J3_Complete |>
+  pivot_longer(cols = contains('-'),
+               names_to = 'Month',
+               values_to = 'Usage')
+
+write_xlsx(TR_Complete_Longer_3, 'Springer Usage by Access Type and Title.xlsx')
+```
+
+
+
+
+
+

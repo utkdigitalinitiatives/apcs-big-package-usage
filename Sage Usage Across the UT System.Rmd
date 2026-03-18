@@ -1,0 +1,1786 @@
+---
+title: "Sage Usage Across the UT System"
+author: "Alexander Harriman"
+date: "2024-12-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r, warning = FALSE}
+library(dplyr)
+library(tidyverse)
+library(gt)
+library(stringr)
+library(readxl)
+library(ggplot2)
+library(ggthemes)
+library(janitor)
+library(writexl)
+```
+
+
+# Load Data - UT Chattanooga
+
+
+### TR_J1
+
+```{r}
+utcTR_J1 <- read_excel('sage_tr_j1_utc.xlsx', skip = 13) |>
+  mutate(Location = 'UT Chattanooga',
+         Total_Usage = Reporting_Period_Total) |>
+  mutate(`Jan-2022` = ifelse(is.na(`44562`) == FALSE, `44562`, 0),
+         `Feb-2022` = ifelse(is.na(`44593`) == FALSE, `44593`, 0),
+         `Mar-2022` = ifelse(is.na(`44621`) == FALSE, `44621`, 0),
+         `Apr-2022` = ifelse(is.na(`44652`) == FALSE, `44652`, 0),
+         `May-2022` = ifelse(is.na(`44682`) == FALSE, `44682`, 0),
+         `Jun-2022` = ifelse(is.na(`44713`) == FALSE, `44713`, 0),
+         `Jul-2022` = ifelse(is.na(`44743`) == FALSE, `44743`, 0),
+         `Aug-2022` = ifelse(is.na(`44774`) == FALSE, `44774`, 0),
+         `Sep-2022` = ifelse(is.na(`44805`) == FALSE, `44805`, 0),
+         `Oct-2022` = ifelse(is.na(`44835`) == FALSE, `44835`, 0),
+         `Nov-2022` = ifelse(is.na(`44866`) == FALSE, `44866`, 0),
+         `Dec-2022` = ifelse(is.na(`44896`) == FALSE, `44896`, 0),
+         `Jan-2023` = ifelse(is.na(`44927`) == FALSE, `44927`, 0),
+         `Feb-2023` = ifelse(is.na(`44958`) == FALSE, `44958`, 0),
+         `Mar-2023` = ifelse(is.na(`44986`) == FALSE, `44986`, 0),
+         `Apr-2023` = ifelse(is.na(`45017`) == FALSE, `45017`, 0),
+         `May-2023` = ifelse(is.na(`45047`) == FALSE, `45047`, 0),
+         `Jun-2023` = ifelse(is.na(`45078`) == FALSE, `45078`, 0),
+         `Jul-2023` = ifelse(is.na(`45108`) == FALSE, `45108`, 0),
+         `Aug-2023` = ifelse(is.na(`45139`) == FALSE, `45139`, 0),
+         `Sep-2023` = ifelse(is.na(`45170`) == FALSE, `45170`, 0),
+         `Oct-2023` = ifelse(is.na(`45200`) == FALSE, `45200`, 0),
+         `Nov-2023` = ifelse(is.na(`45231`) == FALSE, `45231`, 0),
+         `Dec-2023` = ifelse(is.na(`45261`) == FALSE, `45261`, 0),
+         `Jan-2024` = ifelse(is.na(`45292`) == FALSE, `45292`, 0),
+         `Feb-2024` = ifelse(is.na(`45323`) == FALSE, `45323`, 0),
+         `Mar-2024` = ifelse(is.na(`45352`) == FALSE, `45352`, 0),
+         `Apr-2024` = ifelse(is.na(`45383`) == FALSE, `45383`, 0),
+         `May-2024` = ifelse(is.na(`45413`) == FALSE, `45413`, 0),
+         `Jun-2024` = ifelse(is.na(`45444`) == FALSE, `45444`, 0),
+         `Jul-2024` = ifelse(is.na(`45474`) == FALSE, `45474`, 0),
+         `Aug-2024` = ifelse(is.na(`45505`) == FALSE, `45505`, 0),
+         `Sep-2024` = ifelse(is.na(`45536`) == FALSE, `45536`, 0),
+         `Oct-2024` = ifelse(is.na(`45566`) == FALSE, `45566`, 0),
+         `Nov-2024` = ifelse(is.na(`45597`) == FALSE, `45597`, 0),
+         `Dec-2024` = ifelse(is.na(`45627`) == FALSE, `45627`, 0),
+         `Jan-2025` = ifelse(is.na(`45658`) == FALSE, `45658`, 0),
+         `Feb-2025` = ifelse(is.na(`45689`) == FALSE, `45689`, 0),
+         `Mar-2025` = ifelse(is.na(`45717`) == FALSE, `45717`, 0),
+         `Apr-2025` = ifelse(is.na(`45748`) == FALSE, `45748`, 0),
+         `May-2025` = ifelse(is.na(`45778`) == FALSE, `45778`, 0),
+         `Jun-2025` = ifelse(is.na(`45809`) == FALSE, `45809`, 0)) |>
+  select(Title, Publisher, Publisher_ID, Platform, DOI, Proprietary_ID, Print_ISSN, Online_ISSN, URI, Metric_Type, Location, Total_Usage,
+         `Jan-2022`, `Feb-2022`, `Mar-2022`, `Apr-2022`, `May-2022`, `Jun-2022`, `Jul-2022`, `Aug-2022`, `Sep-2022`, `Oct-2022`, `Nov-2022`, `Dec-2022`,
+         `Jan-2023`, `Feb-2023`, `Mar-2023`, `Apr-2023`, `May-2023`, `Jun-2023`, `Jul-2023`, `Aug-2023`, `Sep-2023`, `Oct-2023`, `Nov-2023`, `Dec-2023`,
+         `Jan-2024`, `Feb-2024`, `Mar-2024`, `Apr-2024`, `May-2024`, `Jun-2024`, `Jul-2024`, `Aug-2024`, `Sep-2024`, `Oct-2024`, `Nov-2024`, `Dec-2024`,
+         `Jan-2025`, `Feb-2025`, `Mar-2025`, `Apr-2025`, `May-2025`, `Jun-2025`)
+
+utcTR_J1
+```
+
+
+
+
+### TR_J3
+
+```{r}
+utcTR_J3 <- read_xlsx('sage_tr_j3_utc.xlsx', skip = 13) |>
+  mutate(Location = 'UT Chattanooga',
+         Total_Usage = Reporting_Period_Total) |>
+  mutate(`Jan-2022` = ifelse(is.na(`44562`) == FALSE, `44562`, 0),
+         `Feb-2022` = ifelse(is.na(`44593`) == FALSE, `44593`, 0),
+         `Mar-2022` = ifelse(is.na(`44621`) == FALSE, `44621`, 0),
+         `Apr-2022` = ifelse(is.na(`44652`) == FALSE, `44652`, 0),
+         `May-2022` = ifelse(is.na(`44682`) == FALSE, `44682`, 0),
+         `Jun-2022` = ifelse(is.na(`44713`) == FALSE, `44713`, 0),
+         `Jul-2022` = ifelse(is.na(`44743`) == FALSE, `44743`, 0),
+         `Aug-2022` = ifelse(is.na(`44774`) == FALSE, `44774`, 0),
+         `Sep-2022` = ifelse(is.na(`44805`) == FALSE, `44805`, 0),
+         `Oct-2022` = ifelse(is.na(`44835`) == FALSE, `44835`, 0),
+         `Nov-2022` = ifelse(is.na(`44866`) == FALSE, `44866`, 0),
+         `Dec-2022` = ifelse(is.na(`44896`) == FALSE, `44896`, 0),
+         `Jan-2023` = ifelse(is.na(`44927`) == FALSE, `44927`, 0),
+         `Feb-2023` = ifelse(is.na(`44958`) == FALSE, `44958`, 0),
+         `Mar-2023` = ifelse(is.na(`44986`) == FALSE, `44986`, 0),
+         `Apr-2023` = ifelse(is.na(`45017`) == FALSE, `45017`, 0),
+         `May-2023` = ifelse(is.na(`45047`) == FALSE, `45047`, 0),
+         `Jun-2023` = ifelse(is.na(`45078`) == FALSE, `45078`, 0),
+         `Jul-2023` = ifelse(is.na(`45108`) == FALSE, `45108`, 0),
+         `Aug-2023` = ifelse(is.na(`45139`) == FALSE, `45139`, 0),
+         `Sep-2023` = ifelse(is.na(`45170`) == FALSE, `45170`, 0),
+         `Oct-2023` = ifelse(is.na(`45200`) == FALSE, `45200`, 0),
+         `Nov-2023` = ifelse(is.na(`45231`) == FALSE, `45231`, 0),
+         `Dec-2023` = ifelse(is.na(`45261`) == FALSE, `45261`, 0),
+         `Jan-2024` = ifelse(is.na(`45292`) == FALSE, `45292`, 0),
+         `Feb-2024` = ifelse(is.na(`45323`) == FALSE, `45323`, 0),
+         `Mar-2024` = ifelse(is.na(`45352`) == FALSE, `45352`, 0),
+         `Apr-2024` = ifelse(is.na(`45383`) == FALSE, `45383`, 0),
+         `May-2024` = ifelse(is.na(`45413`) == FALSE, `45413`, 0),
+         `Jun-2024` = ifelse(is.na(`45444`) == FALSE, `45444`, 0),
+         `Jul-2024` = ifelse(is.na(`45474`) == FALSE, `45474`, 0),
+         `Aug-2024` = ifelse(is.na(`45505`) == FALSE, `45505`, 0),
+         `Sep-2024` = ifelse(is.na(`45536`) == FALSE, `45536`, 0),
+         `Oct-2024` = ifelse(is.na(`45566`) == FALSE, `45566`, 0),
+         `Nov-2024` = ifelse(is.na(`45597`) == FALSE, `45597`, 0),
+         `Dec-2024` = ifelse(is.na(`45627`) == FALSE, `45627`, 0),
+         `Jan-2025` = ifelse(is.na(`45658`) == FALSE, `45658`, 0),
+         `Feb-2025` = ifelse(is.na(`45689`) == FALSE, `45689`, 0),
+         `Mar-2025` = ifelse(is.na(`45717`) == FALSE, `45717`, 0),
+         `Apr-2025` = ifelse(is.na(`45748`) == FALSE, `45748`, 0),
+         `May-2025` = ifelse(is.na(`45778`) == FALSE, `45778`, 0),
+         `Jun-2025` = ifelse(is.na(`45809`) == FALSE, `45809`, 0)) |>
+  select(Title, Publisher, Publisher_ID, Platform, DOI, Proprietary_ID, Print_ISSN, Online_ISSN, URI, Access_Type, Metric_Type, Location, Total_Usage,
+         `Jan-2022`, `Feb-2022`, `Mar-2022`, `Apr-2022`, `May-2022`, `Jun-2022`, `Jul-2022`, `Aug-2022`, `Sep-2022`, `Oct-2022`, `Nov-2022`, `Dec-2022`,
+         `Jan-2023`, `Feb-2023`, `Mar-2023`, `Apr-2023`, `May-2023`, `Jun-2023`, `Jul-2023`, `Aug-2023`, `Sep-2023`, `Oct-2023`, `Nov-2023`, `Dec-2023`,
+         `Jan-2024`, `Feb-2024`, `Mar-2024`, `Apr-2024`, `May-2024`, `Jun-2024`, `Jul-2024`, `Aug-2024`, `Sep-2024`, `Oct-2024`, `Nov-2024`, `Dec-2024`,
+         `Jan-2025`, `Feb-2025`, `Mar-2025`, `Apr-2025`, `May-2025`, `Jun-2025`)
+
+utcTR_J3
+```
+
+
+
+### TR_J4
+
+```{r}
+utcTR_J4 <- read_excel('sage_tr_j4_utc.xlsx', skip = 13) |>
+  mutate(Location = 'UT Chattanooga',
+         Total_Usage = Reporting_Period_Total) |>
+  mutate(`Jan-2022` = ifelse(is.na(`44562`) == FALSE, `44562`, 0),
+         `Feb-2022` = ifelse(is.na(`44593`) == FALSE, `44593`, 0),
+         `Mar-2022` = ifelse(is.na(`44621`) == FALSE, `44621`, 0),
+         `Apr-2022` = ifelse(is.na(`44652`) == FALSE, `44652`, 0),
+         `May-2022` = ifelse(is.na(`44682`) == FALSE, `44682`, 0),
+         `Jun-2022` = ifelse(is.na(`44713`) == FALSE, `44713`, 0),
+         `Jul-2022` = ifelse(is.na(`44743`) == FALSE, `44743`, 0),
+         `Aug-2022` = ifelse(is.na(`44774`) == FALSE, `44774`, 0),
+         `Sep-2022` = ifelse(is.na(`44805`) == FALSE, `44805`, 0),
+         `Oct-2022` = ifelse(is.na(`44835`) == FALSE, `44835`, 0),
+         `Nov-2022` = ifelse(is.na(`44866`) == FALSE, `44866`, 0),
+         `Dec-2022` = ifelse(is.na(`44896`) == FALSE, `44896`, 0),
+         `Jan-2023` = ifelse(is.na(`44927`) == FALSE, `44927`, 0),
+         `Feb-2023` = ifelse(is.na(`44958`) == FALSE, `44958`, 0),
+         `Mar-2023` = ifelse(is.na(`44986`) == FALSE, `44986`, 0),
+         `Apr-2023` = ifelse(is.na(`45017`) == FALSE, `45017`, 0),
+         `May-2023` = ifelse(is.na(`45047`) == FALSE, `45047`, 0),
+         `Jun-2023` = ifelse(is.na(`45078`) == FALSE, `45078`, 0),
+         `Jul-2023` = ifelse(is.na(`45108`) == FALSE, `45108`, 0),
+         `Aug-2023` = ifelse(is.na(`45139`) == FALSE, `45139`, 0),
+         `Sep-2023` = ifelse(is.na(`45170`) == FALSE, `45170`, 0),
+         `Oct-2023` = ifelse(is.na(`45200`) == FALSE, `45200`, 0),
+         `Nov-2023` = ifelse(is.na(`45231`) == FALSE, `45231`, 0),
+         `Dec-2023` = ifelse(is.na(`45261`) == FALSE, `45261`, 0),
+         `Jan-2024` = ifelse(is.na(`45292`) == FALSE, `45292`, 0),
+         `Feb-2024` = ifelse(is.na(`45323`) == FALSE, `45323`, 0),
+         `Mar-2024` = ifelse(is.na(`45352`) == FALSE, `45352`, 0),
+         `Apr-2024` = ifelse(is.na(`45383`) == FALSE, `45383`, 0),
+         `May-2024` = ifelse(is.na(`45413`) == FALSE, `45413`, 0),
+         `Jun-2024` = ifelse(is.na(`45444`) == FALSE, `45444`, 0),
+         `Jul-2024` = ifelse(is.na(`45474`) == FALSE, `45474`, 0),
+         `Aug-2024` = ifelse(is.na(`45505`) == FALSE, `45505`, 0),
+         `Sep-2024` = ifelse(is.na(`45536`) == FALSE, `45536`, 0),
+         `Oct-2024` = ifelse(is.na(`45566`) == FALSE, `45566`, 0),
+         `Nov-2024` = ifelse(is.na(`45597`) == FALSE, `45597`, 0),
+         `Dec-2024` = ifelse(is.na(`45627`) == FALSE, `45627`, 0),
+         `Jan-2025` = ifelse(is.na(`45658`) == FALSE, `45658`, 0),
+         `Feb-2025` = ifelse(is.na(`45689`) == FALSE, `45689`, 0),
+         `Mar-2025` = ifelse(is.na(`45717`) == FALSE, `45717`, 0),
+         `Apr-2025` = ifelse(is.na(`45748`) == FALSE, `45748`, 0),
+         `May-2025` = ifelse(is.na(`45778`) == FALSE, `45778`, 0),
+         `Jun-2025` = ifelse(is.na(`45809`) == FALSE, `45809`, 0)) |>
+  select(Title, Publisher, Publisher_ID, Platform, DOI, Proprietary_ID, Print_ISSN, Online_ISSN, URI, YOP, Metric_Type, Location, Total_Usage,
+         `Jan-2022`, `Feb-2022`, `Mar-2022`, `Apr-2022`, `May-2022`, `Jun-2022`, `Jul-2022`, `Aug-2022`, `Sep-2022`, `Oct-2022`, `Nov-2022`, `Dec-2022`,
+         `Jan-2023`, `Feb-2023`, `Mar-2023`, `Apr-2023`, `May-2023`, `Jun-2023`, `Jul-2023`, `Aug-2023`, `Sep-2023`, `Oct-2023`, `Nov-2023`, `Dec-2023`,
+         `Jan-2024`, `Feb-2024`, `Mar-2024`, `Apr-2024`, `May-2024`, `Jun-2024`, `Jul-2024`, `Aug-2024`, `Sep-2024`, `Oct-2024`, `Nov-2024`, `Dec-2024`,
+         `Jan-2025`, `Feb-2025`, `Mar-2025`, `Apr-2025`, `May-2025`, `Jun-2025`)
+
+utcTR_J4
+```
+
+
+
+
+
+# Load Data - UT Health Science Center
+
+
+### TR_J1
+
+```{r}
+uthscTR_J1 <- read_tsv('UTHSC SAGE TR_J1_2022-01to2025-06.tsv', skip = 13) |>
+  mutate(Location = 'Health Sciences',
+         Total_Usage = Reporting_Period_Total) |>
+  mutate(`Jan-2022` = ifelse(is.na(`Jan-2022`) == FALSE, `Jan-2022`, 0),
+         `Feb-2022` = ifelse(is.na(`Feb-2022`) == FALSE, `Feb-2022`, 0),
+         `Mar-2022` = ifelse(is.na(`Mar-2022`) == FALSE, `Mar-2022`, 0),
+         `Apr-2022` = ifelse(is.na(`Apr-2022`) == FALSE, `Apr-2022`, 0),
+         `May-2022` = ifelse(is.na(`May-2022`) == FALSE, `May-2022`, 0),
+         `Jun-2022` = ifelse(is.na(`Jun-2022`) == FALSE, `Jun-2022`, 0),
+         `Jul-2022` = ifelse(is.na(`Jul-2022`) == FALSE, `Jul-2022`, 0),
+         `Aug-2022` = ifelse(is.na(`Aug-2022`) == FALSE, `Aug-2022`, 0),
+         `Sep-2022` = ifelse(is.na(`Sep-2022`) == FALSE, `Sep-2022`, 0),
+         `Oct-2022` = ifelse(is.na(`Oct-2022`) == FALSE, `Oct-2022`, 0),
+         `Nov-2022` = ifelse(is.na(`Nov-2022`) == FALSE, `Nov-2022`, 0),
+         `Dec-2022` = ifelse(is.na(`Dec-2022`) == FALSE, `Dec-2022`, 0),
+         `Jan-2023` = ifelse(is.na(`Jan-2023`) == FALSE, `Jan-2023`, 0),
+         `Feb-2023` = ifelse(is.na(`Feb-2023`) == FALSE, `Feb-2023`, 0),
+         `Mar-2023` = ifelse(is.na(`Mar-2023`) == FALSE, `Mar-2023`, 0),
+         `Apr-2023` = ifelse(is.na(`Apr-2023`) == FALSE, `Apr-2023`, 0),
+         `May-2023` = ifelse(is.na(`May-2023`) == FALSE, `May-2023`, 0),
+         `Jun-2023` = ifelse(is.na(`Jun-2023`) == FALSE, `Jun-2023`, 0),
+         `Jul-2023` = ifelse(is.na(`Jul-2023`) == FALSE, `Jul-2023`, 0),
+         `Aug-2023` = ifelse(is.na(`Aug-2023`) == FALSE, `Aug-2023`, 0),
+         `Sep-2023` = ifelse(is.na(`Sep-2023`) == FALSE, `Sep-2023`, 0),
+         `Oct-2023` = ifelse(is.na(`Oct-2023`) == FALSE, `Oct-2023`, 0),
+         `Nov-2023` = ifelse(is.na(`Nov-2023`) == FALSE, `Nov-2023`, 0),
+         `Dec-2023` = ifelse(is.na(`Dec-2023`) == FALSE, `Dec-2023`, 0),
+         `Jan-2024` = ifelse(is.na(`Jan-2024`) == FALSE, `Jan-2024`, 0),
+         `Feb-2024` = ifelse(is.na(`Feb-2024`) == FALSE, `Feb-2024`, 0),
+         `Mar-2024` = ifelse(is.na(`Mar-2024`) == FALSE, `Mar-2024`, 0),
+         `Apr-2024` = ifelse(is.na(`Apr-2024`) == FALSE, `Apr-2024`, 0),
+         `May-2024` = ifelse(is.na(`May-2024`) == FALSE, `May-2024`, 0),
+         `Jun-2024` = ifelse(is.na(`Jun-2024`) == FALSE, `Jun-2024`, 0),
+         `Jul-2024` = ifelse(is.na(`Jul-2024`) == FALSE, `Jul-2024`, 0),
+         `Aug-2024` = ifelse(is.na(`Aug-2024`) == FALSE, `Aug-2024`, 0),
+         `Sep-2024` = ifelse(is.na(`Sep-2024`) == FALSE, `Sep-2024`, 0),
+         `Oct-2024` = ifelse(is.na(`Oct-2024`) == FALSE, `Oct-2024`, 0),
+         `Nov-2024` = ifelse(is.na(`Nov-2024`) == FALSE, `Nov-2024`, 0),
+         `Dec-2024` = ifelse(is.na(`Dec-2024`) == FALSE, `Dec-2024`, 0),
+         `Jan-2025` = ifelse(is.na(`Jan-2025`) == FALSE, `Jan-2025`, 0),
+         `Feb-2025` = ifelse(is.na(`Feb-2025`) == FALSE, `Feb-2025`, 0),
+         `Mar-2025` = ifelse(is.na(`Mar-2025`) == FALSE, `Mar-2025`, 0),
+         `Apr-2025` = ifelse(is.na(`Apr-2025`) == FALSE, `Apr-2025`, 0),
+         `May-2025` = ifelse(is.na(`May-2025`) == FALSE, `May-2025`, 0),
+         `Jun-2025` = ifelse(is.na(`Jun-2025`) == FALSE, `Jun-2025`, 0)) |>
+  select(Title, Publisher, Publisher_ID, Platform, DOI, Proprietary_ID, Print_ISSN, Online_ISSN, URI, Metric_Type, Location, Total_Usage,
+         `Jan-2022`, `Feb-2022`, `Mar-2022`, `Apr-2022`, `May-2022`, `Jun-2022`, `Jul-2022`, `Aug-2022`, `Sep-2022`, `Oct-2022`, `Nov-2022`, `Dec-2022`,
+         `Jan-2023`, `Feb-2023`, `Mar-2023`, `Apr-2023`, `May-2023`, `Jun-2023`, `Jul-2023`, `Aug-2023`, `Sep-2023`, `Oct-2023`, `Nov-2023`, `Dec-2023`,
+         `Jan-2024`, `Feb-2024`, `Mar-2024`, `Apr-2024`, `May-2024`, `Jun-2024`, `Jul-2024`, `Aug-2024`, `Sep-2024`, `Oct-2024`, `Nov-2024`, `Dec-2024`,
+         `Jan-2025`, `Feb-2025`, `Mar-2025`, `Apr-2025`, `May-2025`, `Jun-2025`)
+
+uthscTR_J1
+```
+
+
+### TR_J3
+
+```{r}
+uthscTR_J3 <- read_tsv('UTHSC SAGE TR_J3_2022-01to2025-06.tsv', skip = 13) |>
+  mutate(Location = 'Health Sciences',
+         Total_Usage = Reporting_Period_Total) |>
+  mutate(`Jan-2022` = ifelse(is.na(`Jan-2022`) == FALSE, `Jan-2022`, 0),
+         `Feb-2022` = ifelse(is.na(`Feb-2022`) == FALSE, `Feb-2022`, 0),
+         `Mar-2022` = ifelse(is.na(`Mar-2022`) == FALSE, `Mar-2022`, 0),
+         `Apr-2022` = ifelse(is.na(`Apr-2022`) == FALSE, `Apr-2022`, 0),
+         `May-2022` = ifelse(is.na(`May-2022`) == FALSE, `May-2022`, 0),
+         `Jun-2022` = ifelse(is.na(`Jun-2022`) == FALSE, `Jun-2022`, 0),
+         `Jul-2022` = ifelse(is.na(`Jul-2022`) == FALSE, `Jul-2022`, 0),
+         `Aug-2022` = ifelse(is.na(`Aug-2022`) == FALSE, `Aug-2022`, 0),
+         `Sep-2022` = ifelse(is.na(`Sep-2022`) == FALSE, `Sep-2022`, 0),
+         `Oct-2022` = ifelse(is.na(`Oct-2022`) == FALSE, `Oct-2022`, 0),
+         `Nov-2022` = ifelse(is.na(`Nov-2022`) == FALSE, `Nov-2022`, 0),
+         `Dec-2022` = ifelse(is.na(`Dec-2022`) == FALSE, `Dec-2022`, 0),
+         `Jan-2023` = ifelse(is.na(`Jan-2023`) == FALSE, `Jan-2023`, 0),
+         `Feb-2023` = ifelse(is.na(`Feb-2023`) == FALSE, `Feb-2023`, 0),
+         `Mar-2023` = ifelse(is.na(`Mar-2023`) == FALSE, `Mar-2023`, 0),
+         `Apr-2023` = ifelse(is.na(`Apr-2023`) == FALSE, `Apr-2023`, 0),
+         `May-2023` = ifelse(is.na(`May-2023`) == FALSE, `May-2023`, 0),
+         `Jun-2023` = ifelse(is.na(`Jun-2023`) == FALSE, `Jun-2023`, 0),
+         `Jul-2023` = ifelse(is.na(`Jul-2023`) == FALSE, `Jul-2023`, 0),
+         `Aug-2023` = ifelse(is.na(`Aug-2023`) == FALSE, `Aug-2023`, 0),
+         `Sep-2023` = ifelse(is.na(`Sep-2023`) == FALSE, `Sep-2023`, 0),
+         `Oct-2023` = ifelse(is.na(`Oct-2023`) == FALSE, `Oct-2023`, 0),
+         `Nov-2023` = ifelse(is.na(`Nov-2023`) == FALSE, `Nov-2023`, 0),
+         `Dec-2023` = ifelse(is.na(`Dec-2023`) == FALSE, `Dec-2023`, 0),
+         `Jan-2024` = ifelse(is.na(`Jan-2024`) == FALSE, `Jan-2024`, 0),
+         `Feb-2024` = ifelse(is.na(`Feb-2024`) == FALSE, `Feb-2024`, 0),
+         `Mar-2024` = ifelse(is.na(`Mar-2024`) == FALSE, `Mar-2024`, 0),
+         `Apr-2024` = ifelse(is.na(`Apr-2024`) == FALSE, `Apr-2024`, 0),
+         `May-2024` = ifelse(is.na(`May-2024`) == FALSE, `May-2024`, 0),
+         `Jun-2024` = ifelse(is.na(`Jun-2024`) == FALSE, `Jun-2024`, 0),
+         `Jul-2024` = ifelse(is.na(`Jul-2024`) == FALSE, `Jul-2024`, 0),
+         `Aug-2024` = ifelse(is.na(`Aug-2024`) == FALSE, `Aug-2024`, 0),
+         `Sep-2024` = ifelse(is.na(`Sep-2024`) == FALSE, `Sep-2024`, 0),
+         `Oct-2024` = ifelse(is.na(`Oct-2024`) == FALSE, `Oct-2024`, 0),
+         `Nov-2024` = ifelse(is.na(`Nov-2024`) == FALSE, `Nov-2024`, 0),
+         `Dec-2024` = ifelse(is.na(`Dec-2024`) == FALSE, `Dec-2024`, 0),
+         `Jan-2025` = ifelse(is.na(`Jan-2025`) == FALSE, `Jan-2025`, 0),
+         `Feb-2025` = ifelse(is.na(`Feb-2025`) == FALSE, `Feb-2025`, 0),
+         `Mar-2025` = ifelse(is.na(`Mar-2025`) == FALSE, `Mar-2025`, 0),
+         `Apr-2025` = ifelse(is.na(`Apr-2025`) == FALSE, `Apr-2025`, 0),
+         `May-2025` = ifelse(is.na(`May-2025`) == FALSE, `May-2025`, 0),
+         `Jun-2025` = ifelse(is.na(`Jun-2025`) == FALSE, `Jun-2025`, 0)) |>
+  select(Title, Publisher, Publisher_ID, Platform, DOI, Proprietary_ID, Print_ISSN, Online_ISSN, URI, Access_Type, Metric_Type, Location, Total_Usage,
+         `Jan-2022`, `Feb-2022`, `Mar-2022`, `Apr-2022`, `May-2022`, `Jun-2022`, `Jul-2022`, `Aug-2022`, `Sep-2022`, `Oct-2022`, `Nov-2022`, `Dec-2022`,
+         `Jan-2023`, `Feb-2023`, `Mar-2023`, `Apr-2023`, `May-2023`, `Jun-2023`, `Jul-2023`, `Aug-2023`, `Sep-2023`, `Oct-2023`, `Nov-2023`, `Dec-2023`,
+         `Jan-2024`, `Feb-2024`, `Mar-2024`, `Apr-2024`, `May-2024`, `Jun-2024`, `Jul-2024`, `Aug-2024`, `Sep-2024`, `Oct-2024`, `Nov-2024`, `Dec-2024`,
+         `Jan-2025`, `Feb-2025`, `Mar-2025`, `Apr-2025`, `May-2025`, `Jun-2025`)
+
+uthscTR_J3
+```
+
+
+
+### TR_J4
+
+```{r}
+uthscTR_J4 <- read_tsv('UTHSC SAGE TR_J4_2022-01to2025-06.tsv', skip = 13) |>
+  mutate(Location = 'Health Sciences',
+         Total_Usage = Reporting_Period_Total) |>
+  mutate(`Jan-2022` = ifelse(is.na(`Jan-2022`) == FALSE, `Jan-2022`, 0),
+         `Feb-2022` = ifelse(is.na(`Feb-2022`) == FALSE, `Feb-2022`, 0),
+         `Mar-2022` = ifelse(is.na(`Mar-2022`) == FALSE, `Mar-2022`, 0),
+         `Apr-2022` = ifelse(is.na(`Apr-2022`) == FALSE, `Apr-2022`, 0),
+         `May-2022` = ifelse(is.na(`May-2022`) == FALSE, `May-2022`, 0),
+         `Jun-2022` = ifelse(is.na(`Jun-2022`) == FALSE, `Jun-2022`, 0),
+         `Jul-2022` = ifelse(is.na(`Jul-2022`) == FALSE, `Jul-2022`, 0),
+         `Aug-2022` = ifelse(is.na(`Aug-2022`) == FALSE, `Aug-2022`, 0),
+         `Sep-2022` = ifelse(is.na(`Sep-2022`) == FALSE, `Sep-2022`, 0),
+         `Oct-2022` = ifelse(is.na(`Oct-2022`) == FALSE, `Oct-2022`, 0),
+         `Nov-2022` = ifelse(is.na(`Nov-2022`) == FALSE, `Nov-2022`, 0),
+         `Dec-2022` = ifelse(is.na(`Dec-2022`) == FALSE, `Dec-2022`, 0),
+         `Jan-2023` = ifelse(is.na(`Jan-2023`) == FALSE, `Jan-2023`, 0),
+         `Feb-2023` = ifelse(is.na(`Feb-2023`) == FALSE, `Feb-2023`, 0),
+         `Mar-2023` = ifelse(is.na(`Mar-2023`) == FALSE, `Mar-2023`, 0),
+         `Apr-2023` = ifelse(is.na(`Apr-2023`) == FALSE, `Apr-2023`, 0),
+         `May-2023` = ifelse(is.na(`May-2023`) == FALSE, `May-2023`, 0),
+         `Jun-2023` = ifelse(is.na(`Jun-2023`) == FALSE, `Jun-2023`, 0),
+         `Jul-2023` = ifelse(is.na(`Jul-2023`) == FALSE, `Jul-2023`, 0),
+         `Aug-2023` = ifelse(is.na(`Aug-2023`) == FALSE, `Aug-2023`, 0),
+         `Sep-2023` = ifelse(is.na(`Sep-2023`) == FALSE, `Sep-2023`, 0),
+         `Oct-2023` = ifelse(is.na(`Oct-2023`) == FALSE, `Oct-2023`, 0),
+         `Nov-2023` = ifelse(is.na(`Nov-2023`) == FALSE, `Nov-2023`, 0),
+         `Dec-2023` = ifelse(is.na(`Dec-2023`) == FALSE, `Dec-2023`, 0),
+         `Jan-2024` = ifelse(is.na(`Jan-2024`) == FALSE, `Jan-2024`, 0),
+         `Feb-2024` = ifelse(is.na(`Feb-2024`) == FALSE, `Feb-2024`, 0),
+         `Mar-2024` = ifelse(is.na(`Mar-2024`) == FALSE, `Mar-2024`, 0),
+         `Apr-2024` = ifelse(is.na(`Apr-2024`) == FALSE, `Apr-2024`, 0),
+         `May-2024` = ifelse(is.na(`May-2024`) == FALSE, `May-2024`, 0),
+         `Jun-2024` = ifelse(is.na(`Jun-2024`) == FALSE, `Jun-2024`, 0),
+         `Jul-2024` = ifelse(is.na(`Jul-2024`) == FALSE, `Jul-2024`, 0),
+         `Aug-2024` = ifelse(is.na(`Aug-2024`) == FALSE, `Aug-2024`, 0),
+         `Sep-2024` = ifelse(is.na(`Sep-2024`) == FALSE, `Sep-2024`, 0),
+         `Oct-2024` = ifelse(is.na(`Oct-2024`) == FALSE, `Oct-2024`, 0),
+         `Nov-2024` = ifelse(is.na(`Nov-2024`) == FALSE, `Nov-2024`, 0),
+         `Dec-2024` = ifelse(is.na(`Dec-2024`) == FALSE, `Dec-2024`, 0),
+         `Jan-2025` = ifelse(is.na(`Jan-2025`) == FALSE, `Jan-2025`, 0),
+         `Feb-2025` = ifelse(is.na(`Feb-2025`) == FALSE, `Feb-2025`, 0),
+         `Mar-2025` = ifelse(is.na(`Mar-2025`) == FALSE, `Mar-2025`, 0),
+         `Apr-2025` = ifelse(is.na(`Apr-2025`) == FALSE, `Apr-2025`, 0),
+         `May-2025` = ifelse(is.na(`May-2025`) == FALSE, `May-2025`, 0),
+         `Jun-2025` = ifelse(is.na(`Jun-2025`) == FALSE, `Jun-2025`, 0)) |>
+  select(Title, Publisher, Publisher_ID, Platform, DOI, Proprietary_ID, Print_ISSN, Online_ISSN, URI, YOP, Metric_Type, Location, Total_Usage,
+         `Jan-2022`, `Feb-2022`, `Mar-2022`, `Apr-2022`, `May-2022`, `Jun-2022`, `Jul-2022`, `Aug-2022`, `Sep-2022`, `Oct-2022`, `Nov-2022`, `Dec-2022`,
+         `Jan-2023`, `Feb-2023`, `Mar-2023`, `Apr-2023`, `May-2023`, `Jun-2023`, `Jul-2023`, `Aug-2023`, `Sep-2023`, `Oct-2023`, `Nov-2023`, `Dec-2023`,
+         `Jan-2024`, `Feb-2024`, `Mar-2024`, `Apr-2024`, `May-2024`, `Jun-2024`, `Jul-2024`, `Aug-2024`, `Sep-2024`, `Oct-2024`, `Nov-2024`, `Dec-2024`,
+         `Jan-2025`, `Feb-2025`, `Mar-2025`, `Apr-2025`, `May-2025`, `Jun-2025`)
+
+uthscTR_J4
+```
+
+
+
+# Clean Up the UTK Files to Match Other Column Structures
+
+
+
+## TR_J1
+
+
+```{r}
+utkTR_J1 <- read_excel('UTK-SageJournals-TRJ1-Jan2022-Jun2025.xlsx', skip = 13) |>
+  mutate(Total_Usage = Reporting_Period_Total,
+         Location = 'UT Knoxville') |>
+  mutate(`Jan-2022` = ifelse(is.na(`Jan-22`) == FALSE, `Jan-22`, 0),
+         `Feb-2022` = ifelse(is.na(`Feb-22`) == FALSE, `Feb-22`, 0),
+         `Mar-2022` = ifelse(is.na(`Mar-22`) == FALSE, `Mar-22`, 0),
+         `Apr-2022` = ifelse(is.na(`Apr-22`) == FALSE, `Apr-22`, 0),
+         `May-2022` = ifelse(is.na(`May-22`) == FALSE, `May-22`, 0),
+         `Jun-2022` = ifelse(is.na(`Jun-22`) == FALSE, `Jun-22`, 0),
+         `Jul-2022` = ifelse(is.na(`Jul-22`) == FALSE, `Jul-22`, 0),
+         `Aug-2022` = ifelse(is.na(`Aug-22`) == FALSE, `Aug-22`, 0),
+         `Sep-2022` = ifelse(is.na(`Sep-22`) == FALSE, `Sep-22`, 0),
+         `Oct-2022` = ifelse(is.na(`Oct-22`) == FALSE, `Oct-22`, 0),
+         `Nov-2022` = ifelse(is.na(`Nov-22`) == FALSE, `Nov-22`, 0),
+         `Dec-2022` = ifelse(is.na(`Dec-22`) == FALSE, `Dec-22`, 0),
+         `Jan-2023` = ifelse(is.na(`Jan-23`) == FALSE, `Jan-23`, 0),
+         `Feb-2023` = ifelse(is.na(`Feb-23`) == FALSE, `Feb-23`, 0),
+         `Mar-2023` = ifelse(is.na(`Mar-23`) == FALSE, `Mar-23`, 0),
+         `Apr-2023` = ifelse(is.na(`Apr-23`) == FALSE, `Apr-23`, 0),
+         `May-2023` = ifelse(is.na(`May-23`) == FALSE, `May-23`, 0),
+         `Jun-2023` = ifelse(is.na(`Jun-23`) == FALSE, `Jun-23`, 0),
+         `Jul-2023` = ifelse(is.na(`Jul-23`) == FALSE, `Jul-23`, 0),
+         `Aug-2023` = ifelse(is.na(`Aug-23`) == FALSE, `Aug-23`, 0),
+         `Sep-2023` = ifelse(is.na(`Sep-23`) == FALSE, `Sep-23`, 0),
+         `Oct-2023` = ifelse(is.na(`Oct-23`) == FALSE, `Oct-23`, 0),
+         `Nov-2023` = ifelse(is.na(`Nov-23`) == FALSE, `Nov-23`, 0),
+         `Dec-2023` = ifelse(is.na(`Dec-23`) == FALSE, `Dec-23`, 0),
+         `Jan-2024` = ifelse(is.na(`Jan-24`) == FALSE, `Jan-24`, 0),
+         `Feb-2024` = ifelse(is.na(`Feb-24`) == FALSE, `Feb-24`, 0),
+         `Mar-2024` = ifelse(is.na(`Mar-24`) == FALSE, `Mar-24`, 0),
+         `Apr-2024` = ifelse(is.na(`Apr-24`) == FALSE, `Apr-24`, 0),
+         `May-2024` = ifelse(is.na(`May-24`) == FALSE, `May-24`, 0),
+         `Jun-2024` = ifelse(is.na(`Jun-24`) == FALSE, `Jun-24`, 0),
+         `Jul-2024` = ifelse(is.na(`Jul-24`) == FALSE, `Jul-24`, 0),
+         `Aug-2024` = ifelse(is.na(`Aug-24`) == FALSE, `Aug-24`, 0),
+         `Sep-2024` = ifelse(is.na(`Sep-24`) == FALSE, `Sep-24`, 0),
+         `Oct-2024` = ifelse(is.na(`Oct-24`) == FALSE, `Oct-24`, 0),
+         `Nov-2024` = ifelse(is.na(`Nov-24`) == FALSE, `Nov-24`, 0),
+         `Dec-2024` = ifelse(is.na(`Dec-24`) == FALSE, `Dec-24`, 0),
+         `Jan-2025` = ifelse(is.na(`Jan-25`) == FALSE, `Jan-25`, 0),
+         `Feb-2025` = ifelse(is.na(`Feb-25`) == FALSE, `Feb-25`, 0),
+         `Mar-2025` = ifelse(is.na(`Mar-25`) == FALSE, `Mar-25`, 0),
+         `Apr-2025` = ifelse(is.na(`Apr-25`) == FALSE, `Apr-25`, 0),
+         `May-2025` = ifelse(is.na(`May-25`) == FALSE, `May-25`, 0),
+         `Jun-2025` = ifelse(is.na(`Jun-25`) == FALSE, `Jun-25`, 0)) |>
+  select(Title, Publisher, Publisher_ID, Platform, DOI, Proprietary_ID, Print_ISSN, Online_ISSN, URI, Metric_Type, Location, Total_Usage,
+         `Jan-2022`, `Feb-2022`, `Mar-2022`, `Apr-2022`, `May-2022`, `Jun-2022`, `Jul-2022`, `Aug-2022`, `Sep-2022`, `Oct-2022`, `Nov-2022`, `Dec-2022`,
+         `Jan-2023`, `Feb-2023`, `Mar-2023`, `Apr-2023`, `May-2023`, `Jun-2023`, `Jul-2023`, `Aug-2023`, `Sep-2023`, `Oct-2023`, `Nov-2023`, `Dec-2023`,
+         `Jan-2024`, `Feb-2024`, `Mar-2024`, `Apr-2024`, `May-2024`, `Jun-2024`, `Jul-2024`, `Aug-2024`, `Sep-2024`, `Oct-2024`, `Nov-2024`, `Dec-2024`,
+         `Jan-2025`, `Feb-2025`, `Mar-2025`, `Apr-2025`, `May-2025`, `Jun-2025`)
+
+utkTR_J1
+```
+
+
+## TR_J3
+
+
+
+```{r}
+utkTR_J3 <- read_excel('UTK-SageJournals-TRJ3-Jan2022-Jun2025.xlsx', skip = 13) |>
+  mutate(Total_Usage = Reporting_Period_Total,
+         Location = 'UT Knoxville') |>
+  mutate(`Jan-2022` = ifelse(is.na(`44562`) == FALSE, `44562`, 0),
+         `Feb-2022` = ifelse(is.na(`44593`) == FALSE, `44593`, 0),
+         `Mar-2022` = ifelse(is.na(`44621`) == FALSE, `44621`, 0),
+         `Apr-2022` = ifelse(is.na(`44652`) == FALSE, `44652`, 0),
+         `May-2022` = ifelse(is.na(`44682`) == FALSE, `44682`, 0),
+         `Jun-2022` = ifelse(is.na(`44713`) == FALSE, `44713`, 0),
+         `Jul-2022` = ifelse(is.na(`44743`) == FALSE, `44743`, 0),
+         `Aug-2022` = ifelse(is.na(`44774`) == FALSE, `44774`, 0),
+         `Sep-2022` = ifelse(is.na(`44805`) == FALSE, `44805`, 0),
+         `Oct-2022` = ifelse(is.na(`44835`) == FALSE, `44835`, 0),
+         `Nov-2022` = ifelse(is.na(`44866`) == FALSE, `44866`, 0),
+         `Dec-2022` = ifelse(is.na(`44896`) == FALSE, `44896`, 0),
+         `Jan-2023` = ifelse(is.na(`44927`) == FALSE, `44927`, 0),
+         `Feb-2023` = ifelse(is.na(`44958`) == FALSE, `44958`, 0),
+         `Mar-2023` = ifelse(is.na(`44986`) == FALSE, `44986`, 0),
+         `Apr-2023` = ifelse(is.na(`45017`) == FALSE, `45017`, 0),
+         `May-2023` = ifelse(is.na(`45047`) == FALSE, `45047`, 0),
+         `Jun-2023` = ifelse(is.na(`45078`) == FALSE, `45078`, 0),
+         `Jul-2023` = ifelse(is.na(`45108`) == FALSE, `45108`, 0),
+         `Aug-2023` = ifelse(is.na(`45139`) == FALSE, `45139`, 0),
+         `Sep-2023` = ifelse(is.na(`45170`) == FALSE, `45170`, 0),
+         `Oct-2023` = ifelse(is.na(`45200`) == FALSE, `45200`, 0),
+         `Nov-2023` = ifelse(is.na(`45231`) == FALSE, `45231`, 0),
+         `Dec-2023` = ifelse(is.na(`45261`) == FALSE, `45261`, 0),
+         `Jan-2024` = ifelse(is.na(`45292`) == FALSE, `45292`, 0),
+         `Feb-2024` = ifelse(is.na(`45323`) == FALSE, `45323`, 0),
+         `Mar-2024` = ifelse(is.na(`45352`) == FALSE, `45352`, 0),
+         `Apr-2024` = ifelse(is.na(`45383`) == FALSE, `45383`, 0),
+         `May-2024` = ifelse(is.na(`45413`) == FALSE, `45413`, 0),
+         `Jun-2024` = ifelse(is.na(`45444`) == FALSE, `45444`, 0),
+         `Jul-2024` = ifelse(is.na(`45474`) == FALSE, `45474`, 0),
+         `Aug-2024` = ifelse(is.na(`45505`) == FALSE, `45505`, 0),
+         `Sep-2024` = ifelse(is.na(`45536`) == FALSE, `45536`, 0),
+         `Oct-2024` = ifelse(is.na(`45566`) == FALSE, `45566`, 0),
+         `Nov-2024` = ifelse(is.na(`45597`) == FALSE, `45597`, 0),
+         `Dec-2024` = ifelse(is.na(`45627`) == FALSE, `45627`, 0),
+         `Jan-2025` = ifelse(is.na(`45658`) == FALSE, `45658`, 0),
+         `Feb-2025` = ifelse(is.na(`45689`) == FALSE, `45689`, 0),
+         `Mar-2025` = ifelse(is.na(`45717`) == FALSE, `45717`, 0),
+         `Apr-2025` = ifelse(is.na(`45748`) == FALSE, `45748`, 0),
+         `May-2025` = ifelse(is.na(`45778`) == FALSE, `45778`, 0),
+         `Jun-2025` = ifelse(is.na(`45809`) == FALSE, `45809`, 0)) |>
+  select(Title, Publisher, Publisher_ID, Platform, DOI, Proprietary_ID, Print_ISSN, Online_ISSN, URI, Access_Type, Metric_Type, Location, Total_Usage,
+         `Jan-2022`, `Feb-2022`, `Mar-2022`, `Apr-2022`, `May-2022`, `Jun-2022`, `Jul-2022`, `Aug-2022`, `Sep-2022`, `Oct-2022`, `Nov-2022`, `Dec-2022`,
+         `Jan-2023`, `Feb-2023`, `Mar-2023`, `Apr-2023`, `May-2023`, `Jun-2023`, `Jul-2023`, `Aug-2023`, `Sep-2023`, `Oct-2023`, `Nov-2023`, `Dec-2023`,
+         `Jan-2024`, `Feb-2024`, `Mar-2024`, `Apr-2024`, `May-2024`, `Jun-2024`, `Jul-2024`, `Aug-2024`, `Sep-2024`, `Oct-2024`, `Nov-2024`, `Dec-2024`,
+         `Jan-2025`, `Feb-2025`, `Mar-2025`, `Apr-2025`, `May-2025`, `Jun-2025`)
+
+utkTR_J3
+```
+
+
+
+## TR_J4
+
+
+```{r}
+utkTR_J4 <- read_excel('UTK-SageJournals-TRJ4-Jan2022-Jun2025.xlsx', skip = 13) |>
+  mutate(Total_Usage = Reporting_Period_Total,
+         Location = 'UT Knoxville') |>
+  mutate(`Jan-2022` = ifelse(is.na(`Jan-22`) == FALSE, `Jan-22`, 0),
+         `Feb-2022` = ifelse(is.na(`Feb-22`) == FALSE, `Feb-22`, 0),
+         `Mar-2022` = ifelse(is.na(`Mar-22`) == FALSE, `Mar-22`, 0),
+         `Apr-2022` = ifelse(is.na(`Apr-22`) == FALSE, `Apr-22`, 0),
+         `May-2022` = ifelse(is.na(`May-22`) == FALSE, `May-22`, 0),
+         `Jun-2022` = ifelse(is.na(`Jun-22`) == FALSE, `Jun-22`, 0),
+         `Jul-2022` = ifelse(is.na(`Jul-22`) == FALSE, `Jul-22`, 0),
+         `Aug-2022` = ifelse(is.na(`Aug-22`) == FALSE, `Aug-22`, 0),
+         `Sep-2022` = ifelse(is.na(`Sep-22`) == FALSE, `Sep-22`, 0),
+         `Oct-2022` = ifelse(is.na(`Oct-22`) == FALSE, `Oct-22`, 0),
+         `Nov-2022` = ifelse(is.na(`Nov-22`) == FALSE, `Nov-22`, 0),
+         `Dec-2022` = ifelse(is.na(`Dec-22`) == FALSE, `Dec-22`, 0),
+         `Jan-2023` = ifelse(is.na(`Jan-23`) == FALSE, `Jan-23`, 0),
+         `Feb-2023` = ifelse(is.na(`Feb-23`) == FALSE, `Feb-23`, 0),
+         `Mar-2023` = ifelse(is.na(`Mar-23`) == FALSE, `Mar-23`, 0),
+         `Apr-2023` = ifelse(is.na(`Apr-23`) == FALSE, `Apr-23`, 0),
+         `May-2023` = ifelse(is.na(`May-23`) == FALSE, `May-23`, 0),
+         `Jun-2023` = ifelse(is.na(`Jun-23`) == FALSE, `Jun-23`, 0),
+         `Jul-2023` = ifelse(is.na(`Jul-23`) == FALSE, `Jul-23`, 0),
+         `Aug-2023` = ifelse(is.na(`Aug-23`) == FALSE, `Aug-23`, 0),
+         `Sep-2023` = ifelse(is.na(`Sep-23`) == FALSE, `Sep-23`, 0),
+         `Oct-2023` = ifelse(is.na(`Oct-23`) == FALSE, `Oct-23`, 0),
+         `Nov-2023` = ifelse(is.na(`Nov-23`) == FALSE, `Nov-23`, 0),
+         `Dec-2023` = ifelse(is.na(`Dec-23`) == FALSE, `Dec-23`, 0),
+         `Jan-2024` = ifelse(is.na(`Jan-24`) == FALSE, `Jan-24`, 0),
+         `Feb-2024` = ifelse(is.na(`Feb-24`) == FALSE, `Feb-24`, 0),
+         `Mar-2024` = ifelse(is.na(`Mar-24`) == FALSE, `Mar-24`, 0),
+         `Apr-2024` = ifelse(is.na(`Apr-24`) == FALSE, `Apr-24`, 0),
+         `May-2024` = ifelse(is.na(`May-24`) == FALSE, `May-24`, 0),
+         `Jun-2024` = ifelse(is.na(`Jun-24`) == FALSE, `Jun-24`, 0),
+         `Jul-2024` = ifelse(is.na(`Jul-24`) == FALSE, `Jul-24`, 0),
+         `Aug-2024` = ifelse(is.na(`Aug-24`) == FALSE, `Aug-24`, 0),
+         `Sep-2024` = ifelse(is.na(`Sep-24`) == FALSE, `Sep-24`, 0),
+         `Oct-2024` = ifelse(is.na(`Oct-24`) == FALSE, `Oct-24`, 0),
+         `Nov-2024` = ifelse(is.na(`Nov-24`) == FALSE, `Nov-24`, 0),
+         `Dec-2024` = ifelse(is.na(`Dec-24`) == FALSE, `Dec-24`, 0),
+         `Jan-2025` = ifelse(is.na(`Jan-25`) == FALSE, `Jan-25`, 0),
+         `Feb-2025` = ifelse(is.na(`Feb-25`) == FALSE, `Feb-25`, 0),
+         `Mar-2025` = ifelse(is.na(`Mar-25`) == FALSE, `Mar-25`, 0),
+         `Apr-2025` = ifelse(is.na(`Apr-25`) == FALSE, `Apr-25`, 0),
+         `May-2025` = ifelse(is.na(`May-25`) == FALSE, `May-25`, 0),
+         `Jun-2025` = ifelse(is.na(`Jun-25`) == FALSE, `Jun-25`, 0)) |>
+  select(Title, Publisher, Publisher_ID, Platform, DOI, Proprietary_ID, Print_ISSN, Online_ISSN, URI, YOP, Metric_Type, Location, Total_Usage,
+         `Jan-2022`, `Feb-2022`, `Mar-2022`, `Apr-2022`, `May-2022`, `Jun-2022`, `Jul-2022`, `Aug-2022`, `Sep-2022`, `Oct-2022`, `Nov-2022`, `Dec-2022`,
+         `Jan-2023`, `Feb-2023`, `Mar-2023`, `Apr-2023`, `May-2023`, `Jun-2023`, `Jul-2023`, `Aug-2023`, `Sep-2023`, `Oct-2023`, `Nov-2023`, `Dec-2023`,
+         `Jan-2024`, `Feb-2024`, `Mar-2024`, `Apr-2024`, `May-2024`, `Jun-2024`, `Jul-2024`, `Aug-2024`, `Sep-2024`, `Oct-2024`, `Nov-2024`, `Dec-2024`,
+         `Jan-2025`, `Feb-2025`, `Mar-2025`, `Apr-2025`, `May-2025`, `Jun-2025`)
+
+utkTR_J4
+```
+
+
+
+# Row Bind Like File Types
+
+
+```{r}
+TR_J1 <- plyr::rbind.fill(utcTR_J1, uthscTR_J1, utkTR_J1) |>
+  filter(Metric_Type == 'Unique_Item_Requests')
+TR_J3 <- plyr::rbind.fill(utcTR_J3, uthscTR_J3, utkTR_J3) |>
+  filter(Metric_Type == 'Unique_Item_Requests')
+TR_J4 <- plyr::rbind.fill(utcTR_J4, uthscTR_J4, utkTR_J4) |>
+  filter(Metric_Type == 'Unique_Item_Requests')
+```
+
+
+
+
+
+# Import the Journal List and Journal Information from OUP's Website
+
+
+## All Title List
+
+
+```{r}
+allList <- read_excel('Sage Premier Package Journal List.xlsx') |>
+  mutate(isPremier = 'Yes')
+
+allList
+```
+
+
+
+## STM Package Title List
+
+
+```{r}
+stmList <- read_excel('Sage STM Package Journal List.xlsx') |>
+  mutate(isSTM = 'Yes') |>
+  select(`Journal Code`, isSTM)
+
+stmList
+```
+
+
+## HSS Package Title List
+
+
+```{r}
+hssList <- read_excel('Sage HSS Package Journal List.xlsx') |>
+  mutate(isHSS = 'Yes') |>
+  select(`Journal Code`, isHSS)
+
+hssList
+```
+
+
+
+## Health Science Package Title List
+
+
+```{r}
+healthScienceList <- read_excel('Sage Health Science Package Journal List.xlsx') |>
+  mutate(isHealthScience = 'Yes') |>
+  select(`Journal Code`, isHealthScience)
+
+healthScienceList
+```
+
+
+
+## Clinical Medicine Package Title List
+
+
+```{r}
+clinMedList <- read_excel('Sage Clinical Medicine Package Journal List.xlsx') |>
+  mutate(isClinMed = 'Yes') |>
+  select(`Journal Code`, isClinMed)
+
+clinMedList
+```
+
+
+
+
+```{r}
+testA <- left_join(allList, stmList, by = 'Journal Code')
+testB <- left_join(testA, hssList, by = 'Journal Code')
+testC <- left_join(testB, healthScienceList, by = 'Journal Code')
+fullPackageList <- left_join(testC, clinMedList, by = 'Journal Code')
+```
+
+
+
+## Load in the Price List
+
+
+```{r, warning = FALSE}
+priceList <- read_excel('Sage Journal Pricing List.xlsx')
+
+priceList
+```
+
+
+
+## Clean Up the Price List
+
+
+```{r}
+cleanPriceList <- priceList |>
+  filter(`Product Description` %in% c('Electronic Only', 'Electronic + Backfile Lease')) |>
+  mutate(`Journal Code` = `SAGE ID Code`)
+
+cleanPriceList
+```
+
+# Get Each Title Down to One Row
+
+
+```{r}
+singleRowCost <- data.frame()
+
+ids <- unique(cleanPriceList$`SAGE ID Code`)
+
+for(i in 1:length(ids)){
+  uniqueTitle <- cleanPriceList |>
+    filter(`SAGE ID Code` == ids[i])
+  
+  if(dim(uniqueTitle)[1] == 1){
+    singleRowCost <- rbind(singleRowCost, uniqueTitle)
+  }
+  else{
+    # Specifically choose the backfile
+    backfile <- uniqueTitle |>
+      filter(`Product Description` == 'Electronic + Backfile Lease')
+    
+    singleRowCost <- rbind(singleRowCost, backfile)
+  }
+}
+
+singleRowCost
+```
+
+
+
+
+## Split the Multiple ISSN Cells into Individual Rows
+
+```{r}
+separateRowCost <- singleRowCost |>
+  mutate(splitISSN = str_split(`E-ISSN`, ', ')) |>
+  unnest(cols = c(splitISSN)) |>
+  mutate(splitISSN = str_split(splitISSN, ',')) |>
+  unnest(cols = c(splitISSN)) |>
+  mutate(splitISSN = str_trim(splitISSN, side = 'both'))
+
+separateRowCost
+```
+
+
+
+## Clean up Cost to Prepare for Package Joining
+
+
+
+```{r}
+fullPackageList <- fullPackageList |>
+  rename_at('SAGE (2025PREM2025) (PREM2025) Premier 2025 Titles (1056)', ~'Title')
+
+
+cleanPackageList <- fullPackageList |>
+  mutate(EISSN = case_when(
+    Title == 'Annals of Clinical Psychiatry' ~ '1547-3325',
+    Title == 'Canadian Journal of Occupational Therapy' ~ '1191-9828',
+    Title == 'Clinical Medicine Insights: Pediatrics' ~ '2976-7148',
+    Title == 'Collections' ~ '2631-9667',
+    Title == 'Creative Nursing' ~ '0194-6189',
+    Title == 'Dialogues in AI & Society' ~ '3049-7507',
+    Title == 'Dialogues in Innovation & Entrepreneurship' ~ '3049-7531',
+    `Journal Code` == 'LA66' ~ '3049-7531',
+    Title == 'Dialogues in Management' ~ '3049-7523',
+    `Journal Code` == 'LA65' ~ '3049-7523',
+    Title == 'Dialogues on Climate Change' ~ '2976-8659',
+    Title == 'Ergonomics in Design' ~ '2169-5083',
+    Title == 'European Journal of Probation' ~ '1741-3079',
+    Title == 'Fundamenta Informaticae' ~ '1875-8681',
+    Title == 'International Journal of Educational Reform' ~ '2631-9675',
+    Title == 'Journal of Cellular Biotechnology' ~ '2352-3697',
+    Title == 'Journal of Cognitive Engineering and Decision Making' ~ '2169-5032',
+    Title == 'Journal of Dance Medicine & Science' ~ '1089-313X',
+    Title == 'Journal of Development Policy and Practice' ~ '2455-4952',
+    Title == 'Journal of Cultural Management and Cultural Policy' ~ '2363-5533',
+    Title == 'Journal of School Leadership' ~ '2631-9659',
+    Title == 'Journal of White Collar and Corporate Crime' ~ '2361-3103',
+    Title == 'Lighting Design + Application' ~ '0360-6325',
+    Title == 'Management and Business Review' ~ '2694-1058',
+    Title == 'Public Health Reports®' ~ '1468-2877',
+    Title == 'Science & Society' ~ '1943-2801',
+    Title == 'South African Journal of Psychology' ~ '2078-208X',
+    Title == 'The Anthropocene Review' ~ '1477-0911',
+    Title == 'Urban Political Ecology' ~ '3049-7515',
+    Title == 'Web Intelligence' ~ '2405-6464',
+    .default = EISSN
+  ))
+
+cleanRowCost <- separateRowCost |>
+  mutate(splitISSN = case_when(
+    `SAGE ID Code` == 'L638' ~ '2753-5703',
+    `SAGE ID Code` == 'J944' ~ '0360-6325',
+    `SAGE ID Code` == 'S646' & splitISSN == '1539-6053' ~ '2160-0031',
+    `SAGE ID Code` == 'S858' & splitISSN == '0305-7356' ~ '1741-3087',
+    .default = splitISSN
+  )
+  )
+  
+```
+
+
+
+## Join the Package Information to the Cost Information
+
+
+```{r}
+packageAndCostA <- left_join(cleanPackageList, cleanRowCost, by = c('EISSN' = 'splitISSN')) |>
+  mutate(isOA = NA_character_)
+
+
+packageAndCostB <- right_join(cleanPackageList, cleanRowCost, by = c('EISSN' = 'splitISSN')) |>
+  mutate(isOA = NA_character_)
+
+packageAndCost <- rbind(packageAndCostA, packageAndCostB) |>
+  distinct()
+
+packageAndCost
+```
+
+
+
+
+## Add in the OA Titles
+
+```{r}
+oa <- read_excel('Sage OA Title List.xlsx') |>
+  mutate(`USD Price 2025` = 0,
+         isPremier = NA_character_, 
+         isSTM = NA_character_,
+         isHSS = NA_character_,
+         isHealthScience = NA_character_,
+         isClinMed = NA_character_,
+         isOA = 'Yes') |>
+  select(`SAGE ID Code`, Title, Imprint, `No. of Issues Included`, `E-ISSN`, `USD Price 2025`, isPremier, isSTM, isHSS, isHealthScience, isClinMed, isOA)
+
+oa
+```
+
+
+```{r}
+colnames(oa) <- c('SAGE ID Code', 'Title', 'Imprint', 'No. of Issues Included', 'EISSN', 'Price', 'Premier', 'STM', 'HSS', 'HealthScience', 'ClinMed', 'OpenAccess')
+
+packageAndCostSmall <- packageAndCost |>
+  select(`Journal Code.x`, `Title.x`, Imprint, `No. of Issues Included`, EISSN, `USD Price 2025`, isPremier, isSTM, isHSS, isHealthScience, isClinMed, isOA)
+
+colnames(packageAndCostSmall) <- c('SAGE ID Code', 'Title', 'Imprint', 'No. of Issues Included', 'EISSN', 'Price', 'Premier', 'STM', 'HSS', 'HealthScience', 'ClinMed', 'OpenAccess')
+
+allCost <- rbind(packageAndCostSmall, oa) |>
+  distinct()
+```
+
+
+
+
+## Clean Up EISSN Information to Join to Usage
+
+This involves both filling some missing gaps and editing some slight differences in ISSNs (typically revolving around the X in it).
+
+
+
+```{r}
+cleanTR_J1 <- TR_J1 |>
+  mutate(Online_ISSN = case_when(
+    Title == 'Canadian Journal of Occupational Therapy' ~ '1191-9828',
+    Title == 'Collections' ~ '2631-9667',
+    Title == 'Creative Nursing' ~ '0194-6189',
+    Title == 'International Journal of Education Reform' ~ '2631-9675',
+    Title == 'Ergonomics in Design' ~ '2169-5083',
+    Title == 'European Journal of Probation' ~ '1741-3079',
+    Title == 'International Journal of Educational Reform' ~ '2631-9675',
+    Title == 'Journal of Cognitive Engineering and Decision Making' ~ '2169-5032',
+    Title == 'Journal of Dance Medicine & Science' ~ '1089-313X',
+    Title == 'Journal of Evidence-Based Integrative Medicine' ~ '2156-5899',
+    Title == 'Journal of Indian Association for Child and Adolescent Mental Health' ~ '0973-1342',
+    Title == 'Journal of School Leadership' ~ '2631-9659',
+    Title == 'Journal of White Collar and Corporate Crime' ~ '2361-3103',
+    Title == 'Measurement and Control' ~ '2051-8730',
+    Title == 'Otolaryngologyâ€“Head and Neck Surgery' ~ '1916-0216',
+    Title == 'Psychological Science in the Public Interest' ~ '2160-0031',
+    Title == 'South African Journal of Psychology' ~ '2078-208X',
+    Title == 'The Anthropocene Review' ~ '1477-0911',
+    Title == 'Otolaryngology–Head and Neck Surgery' ~ '1916-0216',
+    Title == 'Journal of the Palaeontological Society of India' ~ '0552-9360',
+    Title == 'Methodological Innovations' ~ '1748-0612',
+    Title == 'Progress in Environmental Geography' ~ '2753-9687',
+    .default = Online_ISSN
+  ))
+
+
+cleanTR_J3 <- TR_J3 |>
+  mutate(Online_ISSN = case_when(
+    Title == 'Canadian Journal of Occupational Therapy' ~ '1191-9828',
+    Title == 'Collections' ~ '2631-9667',
+    Title == 'Creative Nursing' ~ '0194-6189',
+    Title == 'International Journal of Education Reform' ~ '2631-9675',
+    Title == 'Ergonomics in Design' ~ '2169-5083',
+    Title == 'European Journal of Probation' ~ '1741-3079',
+    Title == 'International Journal of Educational Reform' ~ '2631-9675',
+    Title == 'Journal of Cognitive Engineering and Decision Making' ~ '2169-5032',
+    Title == 'Journal of Dance Medicine & Science' ~ '1089-313X',
+    Title == 'Journal of Evidence-Based Integrative Medicine' ~ '2156-5899',
+    Title == 'Journal of Indian Association for Child and Adolescent Mental Health' ~ '0973-1342',
+    Title == 'Journal of School Leadership' ~ '2631-9659',
+    Title == 'Journal of White Collar and Corporate Crime' ~ '2361-3103',
+    Title == 'Measurement and Control' ~ '2051-8730',
+    Title == 'Otolaryngologyâ€“Head and Neck Surgery' ~ '1916-0216',
+    Title == 'Psychological Science in the Public Interest' ~ '2160-0031',
+    Title == 'South African Journal of Psychology' ~ '2078-208X',
+    Title == 'The Anthropocene Review' ~ '1477-0911',
+    Title == 'Otolaryngology–Head and Neck Surgery' ~ '1916-0216',
+    Title == 'Journal of the Palaeontological Society of India' ~ '0552-9360',
+    Title == 'Methodological Innovations' ~ '1748-0612',
+    Title == 'Progress in Environmental Geography' ~ '2753-9687',
+    .default = Online_ISSN
+  ))
+
+
+cleanTR_J4 <- TR_J4 |>
+  mutate(Online_ISSN = case_when(
+    Title == 'Canadian Journal of Occupational Therapy' ~ '1191-9828',
+    Title == 'Collections' ~ '2631-9667',
+    Title == 'Creative Nursing' ~ '0194-6189',
+    Title == 'International Journal of Education Reform' ~ '2631-9675',
+    Title == 'Ergonomics in Design' ~ '2169-5083',
+    Title == 'European Journal of Probation' ~ '1741-3079',
+    Title == 'International Journal of Educational Reform' ~ '2631-9675',
+    Title == 'Journal of Cognitive Engineering and Decision Making' ~ '2169-5032',
+    Title == 'Journal of Dance Medicine & Science' ~ '1089-313X',
+    Title == 'Journal of Evidence-Based Integrative Medicine' ~ '2156-5899',
+    Title == 'Journal of Indian Association for Child and Adolescent Mental Health' ~ '0973-1342',
+    Title == 'Journal of School Leadership' ~ '2631-9659',
+    Title == 'Journal of White Collar and Corporate Crime' ~ '2361-3103',
+    Title == 'Measurement and Control' ~ '2051-8730',
+    Title == 'Otolaryngologyâ€“Head and Neck Surgery' ~ '1916-0216',
+    Title == 'Psychological Science in the Public Interest' ~ '2160-0031',
+    Title == 'South African Journal of Psychology' ~ '2078-208X',
+    Title == 'The Anthropocene Review' ~ '1477-0911',
+    Title == 'Otolaryngology–Head and Neck Surgery' ~ '1916-0216',
+    Title == 'Journal of the Palaeontological Society of India' ~ '0552-9360',
+    Title == 'Methodological Innovations' ~ '1748-0612',
+    Title == 'Progress in Environmental Geography' ~ '2753-9687',
+    .default = Online_ISSN
+  ))
+```
+
+
+
+```{r}
+allCost |>
+  filter(grepl('Advances in methods', Title) == TRUE)
+```
+
+
+
+```{r, warning = FALSE}
+fullTR_J1 <- left_join(cleanTR_J1, allCost, by = c('Online_ISSN' = 'EISSN')) |>
+  mutate(Price = ifelse(OpenAccess == 'Yes' & is.na(OpenAccess) == FALSE, 0, Price),
+         Collections = paste0(
+           ifelse(STM == 'Yes', 'STM, ', ifelse(is.na(STM) == TRUE, '', '')),
+           ifelse(HSS == 'Yes', 'HSS, ', ifelse(is.na(HSS) == TRUE, '', '')),
+           ifelse(HealthScience == 'Yes', 'Health Science, ', ifelse(is.na(HealthScience) == TRUE, '', '')),
+           ifelse(ClinMed == 'Yes', 'Clinical Med, ', ifelse(is.na(ClinMed) == TRUE, '', '')),
+           ifelse(OpenAccess == 'Yes', 'Open Access, ', ifelse(is.na(OpenAccess) == TRUE, '', ''))
+         )) |>
+  mutate(Collections = str_replace_all(Collections, 'NA', '')) |>
+  mutate(Collections = substr(Collections, 1, nchar(Collections) - 2)) |>
+  mutate(Price = case_when(
+    grepl('Environment and Planning', Title.x) == TRUE ~ 9815/6,
+    Title.x == 'Advances in Methods and Practices in Psychological Science' ~ 0,
+    Title.x == 'Clinical Ethics' ~ 762,
+    Title.x == 'Cultural Sociology' ~ 1097,
+    Title.x == 'Culture and Education' ~ 1964,
+    Title.x == 'International Journal of Social Psychology' ~ 1427,
+    Title.x == 'Journal for the Study of Education and Development' ~ 1964,
+    Title.x == 'Journal of International Marketing' ~ 456,
+    Title.x == 'Journal of Marketing' ~ 699,
+    Title.x == 'Journal of Marketing Research' ~ 699,
+    Title.x == 'Journal of Near Infrared Spectroscopy' ~ 1517,
+    Title.x == 'Journal of Public Policy & Marketing' ~ 250,
+    Title.x == 'Medicine, Science and the Law' ~ 820,
+    Title.x == 'Medico-Legal Journal' ~ 732,
+    Title.x == 'NIR news' ~ 516,
+    Title.x == 'Political Insight' ~ 53,
+    Title.x == 'Political Studies Review' ~ 711,
+    Title.x == 'Politics' ~ 1036,
+    Title.x == 'Recherche et Applications en Marketing (English Edition)' ~ 1051,
+    Title.x == 'Recherche et Applications en Marketing (French Edition)' ~ 1051,
+    Title.x == 'Studies in Psychology' ~ 1427,
+    Title.x == 'The British Journal of Politics and International Relations' ~ 1242,
+    .default = Price
+  )) |>
+  mutate(Collections = case_when(
+    Title.x == 'Advances in Methods and Practices in Psychological Science' ~ 'Open Access',
+    .default = Collections
+  )) |>
+  select(Title.x, Location, Metric_Type, Collections, Price,
+         `Jan-2022`, `Feb-2022`, `Mar-2022`, `Apr-2022`, `May-2022`, `Jun-2022`, `Jul-2022`, `Aug-2022`, `Sep-2022`, `Oct-2022`, `Nov-2022`, `Dec-2022`,
+         `Jan-2023`, `Feb-2023`, `Mar-2023`, `Apr-2023`, `May-2023`, `Jun-2023`, `Jul-2023`, `Aug-2023`, `Sep-2023`, `Oct-2023`, `Nov-2023`, `Dec-2023`,
+         `Jan-2024`, `Feb-2024`, `Mar-2024`, `Apr-2024`, `May-2024`, `Jun-2024`, `Jul-2024`, `Aug-2024`, `Sep-2024`, `Oct-2024`, `Nov-2024`, `Dec-2024`,
+         `Jan-2025`, `Feb-2025`, `Mar-2025`, `Apr-2025`, `May-2025`, `Jun-2025`) |>
+  distinct()
+
+fullTR_J3 <- left_join(cleanTR_J3, allCost, by = c('Online_ISSN' = 'EISSN')) |>
+  mutate(Price = ifelse(OpenAccess == 'Yes' & is.na(OpenAccess) == FALSE, 0, Price),
+         Collections = paste0(
+           ifelse(STM == 'Yes', 'STM, ', ifelse(is.na(STM) == TRUE, '', '')),
+           ifelse(HSS == 'Yes', 'HSS, ', ifelse(is.na(HSS) == TRUE, '', '')),
+           ifelse(HealthScience == 'Yes', 'Health Science, ', ifelse(is.na(HealthScience) == TRUE, '', '')),
+           ifelse(ClinMed == 'Yes', 'Clinical Med, ', ifelse(is.na(ClinMed) == TRUE, '', '')),
+           ifelse(OpenAccess == 'Yes', 'Open Access, ', ifelse(is.na(OpenAccess) == TRUE, '', ''))
+         )) |>
+  mutate(Collections = str_replace_all(Collections, 'NA', '')) |>
+  mutate(Collections = substr(Collections, 1, nchar(Collections) - 2)) |>
+  mutate(Price = case_when(
+    grepl('Environment and Planning', Title.x) == TRUE ~ 9815/6,
+    .default = Price
+  )) |>
+  mutate(Price = case_when(
+    grepl('Environment and Planning', Title.x) == TRUE ~ 9815/6,
+    Title.x == 'Advances in Methods and Practices in Psychological Science' ~ 0,
+    Title.x == 'Clinical Ethics' ~ 762,
+    Title.x == 'Cultural Sociology' ~ 1097,
+    Title.x == 'Culture and Education' ~ 1964,
+    Title.x == 'International Journal of Social Psychology' ~ 1427,
+    Title.x == 'Journal for the Study of Education and Development' ~ 1964,
+    Title.x == 'Journal of International Marketing' ~ 456,
+    Title.x == 'Journal of Marketing' ~ 699,
+    Title.x == 'Journal of Marketing Research' ~ 699,
+    Title.x == 'Journal of Near Infrared Spectroscopy' ~ 1517,
+    Title.x == 'Journal of Public Policy & Marketing' ~ 250,
+    Title.x == 'Medicine, Science and the Law' ~ 820,
+    Title.x == 'Medico-Legal Journal' ~ 732,
+    Title.x == 'NIR news' ~ 516,
+    Title.x == 'Political Insight' ~ 53,
+    Title.x == 'Political Studies Review' ~ 711,
+    Title.x == 'Politics' ~ 1036,
+    Title.x == 'Recherche et Applications en Marketing (English Edition)' ~ 1051,
+    Title.x == 'Recherche et Applications en Marketing (French Edition)' ~ 1051,
+    Title.x == 'Studies in Psychology' ~ 1427,
+    Title.x == 'The British Journal of Politics and International Relations' ~ 1242,
+    .default = Price
+  )) |>
+  mutate(Collections = case_when(
+    Title.x == 'Advances in Methods and Practices in Psychological Science' ~ 'Open Access',
+    .default = Collections
+  ))  |>
+  select(Title.x, Location, Access_Type, Metric_Type, Collections, Price,
+         `Jan-2022`, `Feb-2022`, `Mar-2022`, `Apr-2022`, `May-2022`, `Jun-2022`, `Jul-2022`, `Aug-2022`, `Sep-2022`, `Oct-2022`, `Nov-2022`, `Dec-2022`,
+         `Jan-2023`, `Feb-2023`, `Mar-2023`, `Apr-2023`, `May-2023`, `Jun-2023`, `Jul-2023`, `Aug-2023`, `Sep-2023`, `Oct-2023`, `Nov-2023`, `Dec-2023`,
+         `Jan-2024`, `Feb-2024`, `Mar-2024`, `Apr-2024`, `May-2024`, `Jun-2024`, `Jul-2024`, `Aug-2024`, `Sep-2024`, `Oct-2024`, `Nov-2024`, `Dec-2024`,
+         `Jan-2025`, `Feb-2025`, `Mar-2025`, `Apr-2025`, `May-2025`, `Jun-2025`) |>
+  distinct()
+
+fullTR_J4 <- left_join(cleanTR_J4, allCost, by = c('Online_ISSN' = 'EISSN')) |>
+  mutate(Price = ifelse(OpenAccess == 'Yes' & is.na(OpenAccess) == FALSE, 0, Price),
+         Collections = paste0(
+           ifelse(STM == 'Yes', 'STM, ', ifelse(is.na(STM) == TRUE, '', '')),
+           ifelse(HSS == 'Yes', 'HSS, ', ifelse(is.na(HSS) == TRUE, '', '')),
+           ifelse(HealthScience == 'Yes', 'Health Science, ', ifelse(is.na(HealthScience) == TRUE, '', '')),
+           ifelse(ClinMed == 'Yes', 'Clinical Med, ', ifelse(is.na(ClinMed) == TRUE, '', '')),
+           ifelse(OpenAccess == 'Yes', 'Open Access, ', ifelse(is.na(OpenAccess) == TRUE, '', ''))
+         )) |>
+  mutate(Collections = str_replace_all(Collections, 'NA', '')) |>
+  mutate(Collections = substr(Collections, 1, nchar(Collections) - 2)) |>
+  mutate(Price = case_when(
+    grepl('Environment and Planning', Title.x) == TRUE ~ 9815/6,
+    .default = Price
+  )) |>
+  mutate(Price = case_when(
+    grepl('Environment and Planning', Title.x) == TRUE ~ 9815/6,
+    Title.x == 'Advances in Methods and Practices in Psychological Science' ~ 0,
+    Title.x == 'Clinical Ethics' ~ 762,
+    Title.x == 'Cultural Sociology' ~ 1097,
+    Title.x == 'Culture and Education' ~ 1964,
+    Title.x == 'International Journal of Social Psychology' ~ 1427,
+    Title.x == 'Journal for the Study of Education and Development' ~ 1964,
+    Title.x == 'Journal of International Marketing' ~ 456,
+    Title.x == 'Journal of Marketing' ~ 699,
+    Title.x == 'Journal of Marketing Research' ~ 699,
+    Title.x == 'Journal of Near Infrared Spectroscopy' ~ 1517,
+    Title.x == 'Journal of Public Policy & Marketing' ~ 250,
+    Title.x == 'Medicine, Science and the Law' ~ 820,
+    Title.x == 'Medico-Legal Journal' ~ 732,
+    Title.x == 'NIR news' ~ 516,
+    Title.x == 'Political Insight' ~ 53,
+    Title.x == 'Political Studies Review' ~ 711,
+    Title.x == 'Politics' ~ 1036,
+    Title.x == 'Recherche et Applications en Marketing (English Edition)' ~ 1051,
+    Title.x == 'Recherche et Applications en Marketing (French Edition)' ~ 1051,
+    Title.x == 'Studies in Psychology' ~ 1427,
+    Title.x == 'The British Journal of Politics and International Relations' ~ 1242,
+    .default = Price
+  )) |>
+  mutate(Collections = case_when(
+    Title.x == 'Advances in Methods and Practices in Psychological Science' ~ 'Open Access',
+    .default = Collections
+  )) |>
+  select(Title.x, Location, YOP, Metric_Type, Collections, Price,
+         `Jan-2022`, `Feb-2022`, `Mar-2022`, `Apr-2022`, `May-2022`, `Jun-2022`, `Jul-2022`, `Aug-2022`, `Sep-2022`, `Oct-2022`, `Nov-2022`, `Dec-2022`,
+         `Jan-2023`, `Feb-2023`, `Mar-2023`, `Apr-2023`, `May-2023`, `Jun-2023`, `Jul-2023`, `Aug-2023`, `Sep-2023`, `Oct-2023`, `Nov-2023`, `Dec-2023`,
+         `Jan-2024`, `Feb-2024`, `Mar-2024`, `Apr-2024`, `May-2024`, `Jun-2024`, `Jul-2024`, `Aug-2024`, `Sep-2024`, `Oct-2024`, `Nov-2024`, `Dec-2024`,
+         `Jan-2025`, `Feb-2025`, `Mar-2025`, `Apr-2025`, `May-2025`, `Jun-2025`) |>
+  distinct()
+```
+
+
+
+
+
+
+## Load in Total Price of Sage Packages
+
+
+This comes from the previous order cost.
+
+
+
+```{r}
+sagePrice <- data.frame(
+  Location = c('UT Knoxville', 'Health Sciences', 'UT Chattanooga'),
+  Price = c(338711.15, 40625.49, 131145.82)
+)
+```
+
+
+
+## Get Mean Prices per Campus
+
+This will fill in any gaps in price below.
+
+```{r}
+utk <- fullTR_J1 |>
+  filter(Location == 'UT Knoxville')
+
+utkMedPrice <- mean(utk$Price, na.rm = TRUE)
+
+utkMedPrice
+
+
+utc <- fullTR_J1 |>
+  filter(Location == 'UT Chattanooga')
+
+utcMedPrice <- mean(utc$Price, na.rm = TRUE)
+
+utcMedPrice
+
+
+uthsc <- fullTR_J1 |>
+  filter(Location == 'Health Sciences')
+
+uthscMedPrice <- mean(uthsc$Price, na.rm = TRUE)
+
+uthscMedPrice
+```
+
+
+
+# Look at Usage Trends
+
+
+
+## Grand Total Usage
+
+
+
+```{r}
+TR_J4_Complete <- fullTR_J4 |>
+  group_by(Title.x, Location, YOP, Metric_Type, Collections, Price) |>
+  summarise(`Jan-2022` = sum(`Jan-2022`, na.rm = TRUE),
+    `Feb-2022` = sum(`Feb-2022`, na.rm = TRUE),
+    `Mar-2022` = sum(`Mar-2022`, na.rm = TRUE),
+    `Apr-2022` = sum(`Apr-2022`, na.rm = TRUE),
+    `May-2022` = sum(`May-2022`, na.rm = TRUE),
+    `Jun-2022` = sum(`Jun-2022`, na.rm = TRUE),
+    `Jul-2022` = sum(`Jul-2022`, na.rm = TRUE),
+    `Aug-2022` = sum(`Aug-2022`, na.rm = TRUE),
+    `Sep-2022` = sum(`Sep-2022`, na.rm = TRUE),
+    `Oct-2022` = sum(`Oct-2022`, na.rm = TRUE),
+    `Nov-2022` = sum(`Nov-2022`, na.rm = TRUE),
+    `Dec-2022` = sum(`Dec-2022`, na.rm = TRUE),
+    `Jan-2023` = sum(`Jan-2023`, na.rm = TRUE),
+    `Feb-2023` = sum(`Feb-2023`, na.rm = TRUE),
+    `Mar-2023` = sum(`Mar-2023`, na.rm = TRUE),
+    `Apr-2023` = sum(`Apr-2023`, na.rm = TRUE),
+    `May-2023` = sum(`May-2023`, na.rm = TRUE),
+    `Jun-2023` = sum(`Jun-2023`, na.rm = TRUE),
+    `Jul-2023` = sum(`Jul-2023`, na.rm = TRUE),
+    `Aug-2023` = sum(`Aug-2023`, na.rm = TRUE),
+    `Sep-2023` = sum(`Sep-2023`, na.rm = TRUE),
+    `Oct-2023` = sum(`Oct-2023`, na.rm = TRUE),
+    `Nov-2023` = sum(`Nov-2023`, na.rm = TRUE),
+    `Dec-2023` = sum(`Dec-2023`, na.rm = TRUE),
+    `Jan-2024` = sum(`Jan-2024`, na.rm = TRUE),
+    `Feb-2024` = sum(`Feb-2024`, na.rm = TRUE),
+    `Mar-2024` = sum(`Mar-2024`, na.rm = TRUE),
+    `Apr-2024` = sum(`Apr-2024`, na.rm = TRUE),
+    `May-2024` = sum(`May-2024`, na.rm = TRUE),
+    `Jun-2024` = sum(`Jun-2024`, na.rm = TRUE),
+    `Jul-2024` = sum(`Jul-2024`, na.rm = TRUE),
+    `Aug-2024` = sum(`Aug-2024`, na.rm = TRUE),
+    `Sep-2024` = sum(`Sep-2024`, na.rm = TRUE),
+    `Oct-2024` = sum(`Oct-2024`, na.rm = TRUE),
+    `Nov-2024` = sum(`Nov-2024`, na.rm = TRUE),
+    `Dec-2024` = sum(`Dec-2024`, na.rm = TRUE),
+    `Jan-2025` = sum(`Jan-2025`, na.rm = TRUE),
+    `Feb-2025` = sum(`Feb-2025`, na.rm = TRUE),
+    `Mar-2025` = sum(`Mar-2025`, na.rm = TRUE),
+    `Apr-2025` = sum(`Apr-2025`, na.rm = TRUE),
+    `May-2025` = sum(`May-2025`, na.rm = TRUE),
+    `Jun-2025` = sum(`Jun-2025`, na.rm = TRUE)) |>
+  ungroup() |>  
+  mutate(Collections = ifelse(is.na(Collections) == TRUE | Collections == '', 'Unknown', Collections)) |>
+  mutate(Price = case_when(
+    Location == 'UT Knoxville' & is.na(Price) == TRUE ~ utkMedPrice,
+    Location == 'UT Chattanooga' & is.na(Price) == TRUE ~ utcMedPrice,
+    Location == 'Health Sciences' & is.na(Price) == TRUE ~ uthscMedPrice,
+    .default = Price
+  )) |>
+  mutate(usage22 = `Jan-2022` + `Feb-2022` + `Mar-2022` + `Apr-2022` + `May-2022` + `Jun-2022` + `Jul-2022` + `Aug-2022` + `Sep-2022` + `Oct-2022` + `Nov-2022` + `Dec-2022`,
+         usage23 = `Jan-2023` + `Feb-2023` + `Mar-2023` + `Apr-2023` + `May-2023` + `Jun-2023` + `Jul-2023` + `Aug-2023` + `Sep-2023` + `Oct-2023` + `Nov-2023` + `Dec-2023`,
+         usage24 = `Jan-2024` + `Feb-2024` + `Mar-2024` + `Apr-2024` + `May-2024` + `Jun-2024` + `Jul-2024` + `Aug-2024` + `Sep-2024` + `Oct-2024` + `Nov-2024` + `Dec-2024`,
+         usage25 = `Jan-2025` + `Feb-2025` + `Mar-2025` + `Apr-2025` + `May-2025` + `Jun-2025`) |>
+  mutate(Total_Usage = usage22 + usage23 + usage24 + usage25) |>
+  mutate(isCC22 = ifelse((YOP >= 2018 & YOP <= 2022) | YOP == 9999, 'Yes', 'No'),
+         isCC23 = ifelse((YOP >= 2019 & YOP <= 2023) | YOP == 9999, 'Yes', 'No'),
+         isCC24 = ifelse((YOP >= 2020 & YOP <= 2024) | YOP == 9999, 'Yes', 'No'),
+         isCC25 = ifelse(YOP >= 2021, 'Yes', 'No')) |>
+  mutate(isBackfile22 = ifelse(YOP > 1997 & YOP < 2018, 'Yes', 'No'),
+         isBackfile23 = ifelse(YOP > 1997 & YOP < 2019, 'Yes', 'No'),
+         isBackfile24 = ifelse(YOP > 1997 & YOP < 2020, 'Yes', 'No'),
+         isBackfile25 = ifelse(YOP > 1997 & YOP < 2021, 'Yes', 'No')) |>
+  mutate(isTrueBackfile = ifelse(YOP <= 1997, 'Yes', 'No')) |>
+  mutate(currentYearUsage = case_when(
+    YOP == 2022 ~ usage22,
+    YOP == 2023 ~ usage23,
+    YOP == 2024 ~ usage24,
+    YOP == 2025 ~ usage25,
+    .default = 0),
+         ccClearanceUsage = case_when(
+           isCC22 == 'Yes' & isCC23 == 'No' & isCC24 == 'No' & isCC25 == 'No' ~ usage22,
+           isCC22 == 'Yes' & isCC23 == 'Yes' & isCC24 == 'No' & isCC25 == 'No' ~ usage22 + usage23,
+           isCC22 == 'Yes' & isCC23 == 'Yes' & isCC24 == 'Yes' & isCC25 == 'No' ~ usage22 + usage23 + usage24,
+           isCC22 == 'Yes' & isCC23 == 'Yes' & isCC24 == 'Yes' & isCC25 == 'Yes' ~ usage22 + usage23 + usage24 + usage25,
+           isCC22 == 'No' & isCC23 == 'Yes' & isCC24 == 'Yes' & isCC25 == 'Yes' ~ usage23 + usage24 + usage25,
+           isCC22 == 'No' & isCC23 == 'No' & isCC24 == 'Yes' & isCC25 == 'Yes' ~ usage24 + usage25,
+           isCC22 == 'No' & isCC23 == 'No' & isCC24 == 'No' & isCC25 == 'Yes' ~ usage25,
+           isCC22 == 'No' & isCC23 == 'No' & isCC24 == 'No' & isCC25 == 'No' ~ 0,
+           .default = NA
+         ),
+        backfileUsage = case_when(
+           isBackfile22 == 'Yes' & isBackfile23 == 'No' & isBackfile24 == 'No' & isBackfile25 == 'No' ~ usage22,
+           isBackfile22 == 'Yes' & isBackfile23 == 'Yes' & isBackfile24 == 'No' & isBackfile25 == 'No' ~ usage22 + usage23,
+           isBackfile22 == 'Yes' & isBackfile23 == 'Yes' & isBackfile24 == 'Yes' & isBackfile25 == 'No' ~ usage22 + usage23 + usage24,
+           isBackfile22 == 'Yes' & isBackfile23 == 'Yes' & isBackfile24 == 'Yes' & isBackfile25 == 'Yes' ~ usage22 + usage23 + usage24 + usage25,
+           isBackfile22 == 'No' & isBackfile23 == 'Yes' & isBackfile24 == 'Yes' & isBackfile25 == 'Yes' ~ usage23 + usage24 + usage25,
+           isBackfile22 == 'No' & isBackfile23 == 'No' & isBackfile24 == 'Yes' & isBackfile25 == 'Yes' ~ usage24 + usage25,
+           isBackfile22 == 'No' & isBackfile23 == 'No' & isBackfile24 == 'No' & isBackfile25 == 'Yes' ~ usage25,
+           isBackfile22 == 'No' & isBackfile23 == 'No' & isBackfile24 == 'No' & isBackfile25 == 'No' ~ 0,
+           .default = NA          
+        ),
+        trueBackFileUsage = ifelse(isTrueBackfile == 'Yes', Total_Usage, 0)
+  )
+
+TR_J4_Complete |>
+  arrange(desc(ccClearanceUsage))
+```
+
+
+
+
+
+
+# TR_J1: Usage by Package Type and Individual Title Cost/Use
+
+
+
+```{r}
+TR_J1_Complete <- fullTR_J1 |>
+  group_by(Title.x, Location, Metric_Type, Collections, Price) |>
+  summarise(`Jan-2022` = sum(`Jan-2022`, na.rm = TRUE),
+    `Feb-2022` = sum(`Feb-2022`, na.rm = TRUE),
+    `Mar-2022` = sum(`Mar-2022`, na.rm = TRUE),
+    `Apr-2022` = sum(`Apr-2022`, na.rm = TRUE),
+    `May-2022` = sum(`May-2022`, na.rm = TRUE),
+    `Jun-2022` = sum(`Jun-2022`, na.rm = TRUE),
+    `Jul-2022` = sum(`Jul-2022`, na.rm = TRUE),
+    `Aug-2022` = sum(`Aug-2022`, na.rm = TRUE),
+    `Sep-2022` = sum(`Sep-2022`, na.rm = TRUE),
+    `Oct-2022` = sum(`Oct-2022`, na.rm = TRUE),
+    `Nov-2022` = sum(`Nov-2022`, na.rm = TRUE),
+    `Dec-2022` = sum(`Dec-2022`, na.rm = TRUE),
+    `Jan-2023` = sum(`Jan-2023`, na.rm = TRUE),
+    `Feb-2023` = sum(`Feb-2023`, na.rm = TRUE),
+    `Mar-2023` = sum(`Mar-2023`, na.rm = TRUE),
+    `Apr-2023` = sum(`Apr-2023`, na.rm = TRUE),
+    `May-2023` = sum(`May-2023`, na.rm = TRUE),
+    `Jun-2023` = sum(`Jun-2023`, na.rm = TRUE),
+    `Jul-2023` = sum(`Jul-2023`, na.rm = TRUE),
+    `Aug-2023` = sum(`Aug-2023`, na.rm = TRUE),
+    `Sep-2023` = sum(`Sep-2023`, na.rm = TRUE),
+    `Oct-2023` = sum(`Oct-2023`, na.rm = TRUE),
+    `Nov-2023` = sum(`Nov-2023`, na.rm = TRUE),
+    `Dec-2023` = sum(`Dec-2023`, na.rm = TRUE),
+    `Jan-2024` = sum(`Jan-2024`, na.rm = TRUE),
+    `Feb-2024` = sum(`Feb-2024`, na.rm = TRUE),
+    `Mar-2024` = sum(`Mar-2024`, na.rm = TRUE),
+    `Apr-2024` = sum(`Apr-2024`, na.rm = TRUE),
+    `May-2024` = sum(`May-2024`, na.rm = TRUE),
+    `Jun-2024` = sum(`Jun-2024`, na.rm = TRUE),
+    `Jul-2024` = sum(`Jul-2024`, na.rm = TRUE),
+    `Aug-2024` = sum(`Aug-2024`, na.rm = TRUE),
+    `Sep-2024` = sum(`Sep-2024`, na.rm = TRUE),
+    `Oct-2024` = sum(`Oct-2024`, na.rm = TRUE),
+    `Nov-2024` = sum(`Nov-2024`, na.rm = TRUE),
+    `Dec-2024` = sum(`Dec-2024`, na.rm = TRUE),
+    `Jan-2025` = sum(`Jan-2025`, na.rm = TRUE),
+    `Feb-2025` = sum(`Feb-2025`, na.rm = TRUE),
+    `Mar-2025` = sum(`Mar-2025`, na.rm = TRUE),
+    `Apr-2025` = sum(`Apr-2025`, na.rm = TRUE),
+    `May-2025` = sum(`May-2025`, na.rm = TRUE),
+    `Jun-2025` = sum(`Jun-2025`, na.rm = TRUE)) |>
+  ungroup() |>
+  mutate(Collections = ifelse(is.na(Collections) == TRUE | Collections == '', 'Unknown', Collections)) |>
+  mutate(Price = case_when(
+    Location == 'UT Knoxville' & is.na(Price) == TRUE ~ utkMedPrice,
+    Location == 'UT Chattanooga' & is.na(Price) == TRUE ~ utcMedPrice,
+    Location == 'Health Sciences' & is.na(Price) == TRUE ~ uthscMedPrice,
+    .default = Price
+  )) |>
+  mutate(usage22 = `Jan-2022` + `Feb-2022` + `Mar-2022` + `Apr-2022` + `May-2022` + `Jun-2022` + `Jul-2022` + `Aug-2022` + `Sep-2022` + `Oct-2022` + `Nov-2022` + `Dec-2022`,
+         usage23 = `Jan-2023` + `Feb-2023` + `Mar-2023` + `Apr-2023` + `May-2023` + `Jun-2023` + `Jul-2023` + `Aug-2023` + `Sep-2023` + `Oct-2023` + `Nov-2023` + `Dec-2023`,
+         usage24 = `Jan-2024` + `Feb-2024` + `Mar-2024` + `Apr-2024` + `May-2024` + `Jun-2024` + `Jul-2024` + `Aug-2024` + `Sep-2024` + `Oct-2024` + `Nov-2024` + `Dec-2024`,
+         usage25 = `Jan-2025` + `Feb-2025` + `Mar-2025` + `Apr-2025` + `May-2025` + `Jun-2025`) |>
+  mutate(Total_Usage = usage22 + usage23 + usage24 + usage25) |>
+  mutate(fullCollectionUsage = ifelse(Collections != "", Total_Usage, 0),
+         clinMedCollectionUsage = ifelse(grepl('Clinical Med', Collections, fixed = FALSE) == TRUE, Total_Usage, 0),
+         stmCollectionUsage = ifelse(grepl('STM', Collections, fixed = FALSE) == TRUE, Total_Usage, 0),
+         hssCollectionUsage = ifelse(grepl('HSS', Collections, fixed = FALSE) == TRUE, Total_Usage, 0),
+         stmCollectionUsage = ifelse(grepl('STM', Collections, fixed = FALSE) == TRUE, Total_Usage, 0),
+         oaCollectionUsage = ifelse(grepl('Open Access', Collections, fixed = FALSE) == TRUE, Total_Usage, 0),
+         unknownCollectionUsage = ifelse(Collections == '', Total_Usage, 0)) |>
+  mutate(costUse = Price / (Total_Usage / 3.5))|>
+  mutate(costUseBucket = case_when(
+    Collections == 'Open Access' ~ 'Full Open Access',
+    costUse < 20 ~ 'Under $20',
+    costUse >= 20 ~ 'Over $20'
+  )
+)
+
+TR_J1_Complete
+```
+
+
+# TR_J3: Usage by OA Type, Including OA Titles
+
+
+
+```{r}
+TR_J3_Complete <- fullTR_J3 |>
+  group_by(Title.x, Location, Access_Type, Metric_Type, Collections) |>
+  summarise(`Jan-2022` = sum(`Jan-2022`, na.rm = TRUE),
+    `Feb-2022` = sum(`Feb-2022`, na.rm = TRUE),
+    `Mar-2022` = sum(`Mar-2022`, na.rm = TRUE),
+    `Apr-2022` = sum(`Apr-2022`, na.rm = TRUE),
+    `May-2022` = sum(`May-2022`, na.rm = TRUE),
+    `Jun-2022` = sum(`Jun-2022`, na.rm = TRUE),
+    `Jul-2022` = sum(`Jul-2022`, na.rm = TRUE),
+    `Aug-2022` = sum(`Aug-2022`, na.rm = TRUE),
+    `Sep-2022` = sum(`Sep-2022`, na.rm = TRUE),
+    `Oct-2022` = sum(`Oct-2022`, na.rm = TRUE),
+    `Nov-2022` = sum(`Nov-2022`, na.rm = TRUE),
+    `Dec-2022` = sum(`Dec-2022`, na.rm = TRUE),
+    `Jan-2023` = sum(`Jan-2023`, na.rm = TRUE),
+    `Feb-2023` = sum(`Feb-2023`, na.rm = TRUE),
+    `Mar-2023` = sum(`Mar-2023`, na.rm = TRUE),
+    `Apr-2023` = sum(`Apr-2023`, na.rm = TRUE),
+    `May-2023` = sum(`May-2023`, na.rm = TRUE),
+    `Jun-2023` = sum(`Jun-2023`, na.rm = TRUE),
+    `Jul-2023` = sum(`Jul-2023`, na.rm = TRUE),
+    `Aug-2023` = sum(`Aug-2023`, na.rm = TRUE),
+    `Sep-2023` = sum(`Sep-2023`, na.rm = TRUE),
+    `Oct-2023` = sum(`Oct-2023`, na.rm = TRUE),
+    `Nov-2023` = sum(`Nov-2023`, na.rm = TRUE),
+    `Dec-2023` = sum(`Dec-2023`, na.rm = TRUE),
+    `Jan-2024` = sum(`Jan-2024`, na.rm = TRUE),
+    `Feb-2024` = sum(`Feb-2024`, na.rm = TRUE),
+    `Mar-2024` = sum(`Mar-2024`, na.rm = TRUE),
+    `Apr-2024` = sum(`Apr-2024`, na.rm = TRUE),
+    `May-2024` = sum(`May-2024`, na.rm = TRUE),
+    `Jun-2024` = sum(`Jun-2024`, na.rm = TRUE),
+    `Jul-2024` = sum(`Jul-2024`, na.rm = TRUE),
+    `Aug-2024` = sum(`Aug-2024`, na.rm = TRUE),
+    `Sep-2024` = sum(`Sep-2024`, na.rm = TRUE),
+    `Oct-2024` = sum(`Oct-2024`, na.rm = TRUE),
+    `Nov-2024` = sum(`Nov-2024`, na.rm = TRUE),
+    `Dec-2024` = sum(`Dec-2024`, na.rm = TRUE),
+    `Jan-2025` = sum(`Jan-2025`, na.rm = TRUE),
+    `Feb-2025` = sum(`Feb-2025`, na.rm = TRUE),
+    `Mar-2025` = sum(`Mar-2025`, na.rm = TRUE),
+    `Apr-2025` = sum(`Apr-2025`, na.rm = TRUE),
+    `May-2025` = sum(`May-2025`, na.rm = TRUE),
+    `Jun-2025` = sum(`Jun-2025`, na.rm = TRUE)) |>
+  ungroup() |>
+  mutate(Collections = ifelse(is.na(Collections) == TRUE | Collections == '', 'Unknown', Collections)) |>
+  mutate(usage22 = `Jan-2022` + `Feb-2022` + `Mar-2022` + `Apr-2022` + `May-2022` + `Jun-2022` + `Jul-2022` + `Aug-2022` + `Sep-2022` + `Oct-2022` + `Nov-2022` + `Dec-2022`,
+         usage23 = `Jan-2023` + `Feb-2023` + `Mar-2023` + `Apr-2023` + `May-2023` + `Jun-2023` + `Jul-2023` + `Aug-2023` + `Sep-2023` + `Oct-2023` + `Nov-2023` + `Dec-2023`,
+         usage24 = `Jan-2024` + `Feb-2024` + `Mar-2024` + `Apr-2024` + `May-2024` + `Jun-2024` + `Jul-2024` + `Aug-2024` + `Sep-2024` + `Oct-2024` + `Nov-2024` + `Dec-2024`,
+         usage25 = `Jan-2025` + `Feb-2025` + `Mar-2025` + `Apr-2025` + `May-2025` + `Jun-2025`) |>
+  mutate(Total_Usage = usage22 + usage23 + usage24 + usage25) |>
+  mutate(fullCollectionUsage = ifelse(Collections != "", Total_Usage, 0),
+         clinMedCollectionUsage = ifelse(grepl('Clinical Med', Collections, fixed = FALSE) == TRUE, Total_Usage, 0),
+         stmCollectionUsage = ifelse(grepl('STM', Collections, fixed = FALSE) == TRUE, Total_Usage, 0),
+         hssCollectionUsage = ifelse(grepl('HSS', Collections, fixed = FALSE) == TRUE, Total_Usage, 0),
+         stmCollectionUsage = ifelse(grepl('STM', Collections, fixed = FALSE) == TRUE, Total_Usage, 0),
+         oaCollectionUsage = ifelse(grepl('Open Access', Collections, fixed = FALSE) == TRUE, Total_Usage, 0),
+         unknownCollectionUsage = ifelse(Collections == '', Total_Usage, 0))
+
+TR_J3_Complete
+```
+
+
+
+# Add the Cost/Use Bucket and the Price from TR_Complete to TR_J4_Complete
+
+
+
+```{r, warning = FALSE}
+smallTRComplete <- TR_J1_Complete |>
+  select(Title.x, Location, Collections, costUseBucket, Price)
+
+TR_J4_Export <- left_join(TR_J4_Complete, smallTRComplete, by = c('Title.x' = 'Title.x', 'Location' = 'Location', 'Collections' = 'Collections', 'Price' = 'Price'))
+```
+
+
+# Create the Copyright Clearance Bucket Column
+
+
+```{r}
+TR_J4_Buckets <- TR_J4_Export |>
+  group_by(Title.x, Location, Collections, Price) |>
+  summarise(copyrightClearanceUsage = sum(ccClearanceUsage)) |>
+  mutate(ccCostUse = Price / (copyrightClearanceUsage / 3.5)) |>
+  mutate(ccCostUseBucket = case_when(
+    Collections == 'Open Access' ~ 'Full Open Access',
+    ccCostUse < 20 ~ 'Under $20',
+    ccCostUse >= 20 ~ 'Over $20'
+  )) |>
+  mutate(ccCostUse = ifelse(is.infinite(ccCostUse) == TRUE, 0, ccCostUse)) |>
+  mutate(Collections = str_trim(Collections, side = 'both'))
+```
+
+```{r}
+TR_J4_Export_Final <- left_join(TR_J4_Export, TR_J4_Buckets, by = c('Title.x' = 'Title.x', 'Location' = 'Location', 'Collections' = 'Collections', 'Price' = 'Price')) 
+```
+
+
+# Export the Data
+
+```{r}
+write.csv(TR_J4_Export_Final, 'Sage Usage by Year of Publishing.csv', row.names = FALSE)
+```
+
+
+# TR_Complete: Cost/Use by Campus
+
+
+
+## TR_Complete: Total Usage by Campus
+
+
+```{r}
+TR_Complete_Usage = TR_J1_Complete |>
+  group_by(Location) |>
+  summarise(Titles = length(unique(Title.x)),
+            Usage = sum(Total_Usage))
+
+TR_Complete_Usage
+```
+
+
+## Compare Total Usage to the Total Cost
+
+
+```{r}
+costPerUseTotal <- inner_join(sagePrice, TR_Complete_Usage, by = 'Location') |>
+  mutate(costUse = Price / (Usage / 3.5),
+         costTitle = Price / Titles)
+
+costPerUseTotal
+```
+
+
+
+
+```{r}
+write.csv(costPerUseTotal, 'Sage Package Cost Per Use Summary.csv', row.names = FALSE)
+```
+
+
+# TR_Complete: Usage by Package
+
+
+```{r}
+TR_Package_Usage <- fullTR_J1 |>
+  group_by(Title.x, Location, Metric_Type, Collections) |>
+  summarise(`Jan-2022` = sum(`Jan-2022`, na.rm = TRUE),
+    `Feb-2022` = sum(`Feb-2022`, na.rm = TRUE),
+    `Mar-2022` = sum(`Mar-2022`, na.rm = TRUE),
+    `Apr-2022` = sum(`Apr-2022`, na.rm = TRUE),
+    `May-2022` = sum(`May-2022`, na.rm = TRUE),
+    `Jun-2022` = sum(`Jun-2022`, na.rm = TRUE),
+    `Jul-2022` = sum(`Jul-2022`, na.rm = TRUE),
+    `Aug-2022` = sum(`Aug-2022`, na.rm = TRUE),
+    `Sep-2022` = sum(`Sep-2022`, na.rm = TRUE),
+    `Oct-2022` = sum(`Oct-2022`, na.rm = TRUE),
+    `Nov-2022` = sum(`Nov-2022`, na.rm = TRUE),
+    `Dec-2022` = sum(`Dec-2022`, na.rm = TRUE),
+    `Jan-2023` = sum(`Jan-2023`, na.rm = TRUE),
+    `Feb-2023` = sum(`Feb-2023`, na.rm = TRUE),
+    `Mar-2023` = sum(`Mar-2023`, na.rm = TRUE),
+    `Apr-2023` = sum(`Apr-2023`, na.rm = TRUE),
+    `May-2023` = sum(`May-2023`, na.rm = TRUE),
+    `Jun-2023` = sum(`Jun-2023`, na.rm = TRUE),
+    `Jul-2023` = sum(`Jul-2023`, na.rm = TRUE),
+    `Aug-2023` = sum(`Aug-2023`, na.rm = TRUE),
+    `Sep-2023` = sum(`Sep-2023`, na.rm = TRUE),
+    `Oct-2023` = sum(`Oct-2023`, na.rm = TRUE),
+    `Nov-2023` = sum(`Nov-2023`, na.rm = TRUE),
+    `Dec-2023` = sum(`Dec-2023`, na.rm = TRUE),
+    `Jan-2024` = sum(`Jan-2024`, na.rm = TRUE),
+    `Feb-2024` = sum(`Feb-2024`, na.rm = TRUE),
+    `Mar-2024` = sum(`Mar-2024`, na.rm = TRUE),
+    `Apr-2024` = sum(`Apr-2024`, na.rm = TRUE),
+    `May-2024` = sum(`May-2024`, na.rm = TRUE),
+    `Jun-2024` = sum(`Jun-2024`, na.rm = TRUE),
+    `Jul-2024` = sum(`Jul-2024`, na.rm = TRUE),
+    `Aug-2024` = sum(`Aug-2024`, na.rm = TRUE),
+    `Sep-2024` = sum(`Sep-2024`, na.rm = TRUE),
+    `Oct-2024` = sum(`Oct-2024`, na.rm = TRUE),
+    `Nov-2024` = sum(`Nov-2024`, na.rm = TRUE),
+    `Dec-2024` = sum(`Dec-2024`, na.rm = TRUE),
+    `Jan-2025` = sum(`Jan-2025`, na.rm = TRUE),
+    `Feb-2025` = sum(`Feb-2025`, na.rm = TRUE),
+    `Mar-2025` = sum(`Mar-2025`, na.rm = TRUE),
+    `Apr-2025` = sum(`Apr-2025`, na.rm = TRUE),
+    `May-2025` = sum(`May-2025`, na.rm = TRUE),
+    `Jun-2025` = sum(`Jun-2025`, na.rm = TRUE)) |>
+  ungroup() |>
+  mutate(Collections = ifelse(is.na(Collections) == TRUE | Collections == '', 'Unknown', Collections)) |>
+  mutate(splitCollection = strsplit(Collections, ', ')) |>
+  unnest(splitCollection) |>
+  mutate(usage22 = `Jan-2022` + `Feb-2022` + `Mar-2022` + `Apr-2022` + `May-2022` + `Jun-2022` + `Jul-2022` + `Aug-2022` + `Sep-2022` + `Oct-2022` + `Nov-2022` + `Dec-2022`,
+         usage23 = `Jan-2023` + `Feb-2023` + `Mar-2023` + `Apr-2023` + `May-2023` + `Jun-2023` + `Jul-2023` + `Aug-2023` + `Sep-2023` + `Oct-2023` + `Nov-2023` + `Dec-2023`,
+         usage24 = `Jan-2024` + `Feb-2024` + `Mar-2024` + `Apr-2024` + `May-2024` + `Jun-2024` + `Jul-2024` + `Aug-2024` + `Sep-2024` + `Oct-2024` + `Nov-2024` + `Dec-2024`,
+         usage25 = `Jan-2025` + `Feb-2025` + `Mar-2025` + `Apr-2025` + `May-2025` + `Jun-2025`) |>
+  mutate(Total_Usage = usage22 + usage23 + usage24 + usage25) |>
+  group_by(Location, splitCollection) |>
+  summarise(packageTitles = length(unique(Title.x)),
+            packageUsage = sum(Total_Usage)) |>
+  mutate(packageTitlePerc = case_when(
+              Location == 'Health Sciences' ~ packageTitles / 852,
+              Location == 'UT Chattanooga' ~ packageTitles / 1086,
+              Location == 'UT Knoxville' ~ packageTitles / 1200
+            ),
+            packageUsagePerc = case_when(
+              Location == 'Health Sciences' ~ packageUsage / 41079,
+              Location == 'UT Chattanooga' ~ packageUsage / 93151,
+              Location == 'UT Knoxville' ~ packageUsage / 352557
+            )) |>
+  mutate(usageOverExpected = packageUsagePerc - packageTitlePerc) |>
+  distinct()
+
+TR_Package_Usage
+```
+
+
+
+
+
+## Combine the Two Tables for Export
+
+
+```{r}
+TR_Package_And_CPU = inner_join(TR_Package_Usage, costPerUseTotal, by = 'Location') |>
+  mutate(costTitle = Price / Titles)
+
+write.csv(TR_Package_And_CPU, 'Campus Usage by Package and Overall Cost Per Use.csv', row.names = FALSE)
+```
+
+
+
+# Pivot Tables Longer for Line Graphs
+
+
+
+```{r}
+TR_Complete_Longer <- TR_J1_Complete |>
+  pivot_longer(cols = contains('-'),
+               names_to = 'Month',
+               values_to = 'Usage') |>
+  mutate(Collections = str_trim(Collections, side = 'both'))
+
+write.csv(TR_Complete_Longer, 'Sage Title Use and Title Cost Per Use.csv', row.names = FALSE)
+```
+
+
+
+```{r}
+TR_Complete_Longer_3 <- TR_J3_Complete |>
+  pivot_longer(cols = contains('-'),
+               names_to = 'Month',
+               values_to = 'Usage') |>
+  mutate(Collections = str_trim(Collections, side = 'both'))
+
+write.csv(TR_Complete_Longer_3, 'Sage Usage by Access Type and Title.csv', row.names = FALSE)
+```
+
+
+
+
+
+# Mary Ann Liebert Usage Clean-Up
+
+
+## Load the TR_J1 Files
+
+
+```{r}
+ma1UTK <- read_tsv('Liebert-TRJ1-Jan2022-Jun2025.tsv', skip = 9) |>
+  mutate(Location = 'UT Knoxville') |>
+  filter(Metric_Type == 'Unique_Item_Requests')
+
+ma1UTHSC <- read_tsv('UTHSC_LIEBERT_J1_2022JAN-2025JUN.tsv', skip = 13) |>
+  mutate(Location = 'Health Science') |>
+  filter(Metric_Type == 'Unique_Item_Requests')
+
+colnames(ma1UTHSC) <- c('Title', 'Publisher', 'Publisher_ID', 'Platform', 'DOI', 'Proprietary_ID', 'Print_ISSN', 'Online_ISSN', 'URI', 'Metric_Type', 'Reporting_Period_Total',
+                        '2022-01', '2022-02', '2022-03', '2022-04', '2022-05', '2022-06', '2022-07', '2022-08', '2022-09', '2022-10', '2022-11', '2022-12',
+                        '2023-01', '2023-02', '2023-03', '2023-04', '2023-05', '2023-06', '2023-07', '2023-08', '2023-09', '2023-10', '2023-11', '2023-12',
+                        '2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06', '2024-07', '2024-08', '2024-09', '2024-10', '2024-11', '2024-12',
+                        '2025-01', '2025-02', '2025-03', '2025-04', '2025-05', '2025-06', 'Location')
+
+ma1 <- rbind(ma1UTK, ma1UTHSC)
+```
+
+
+## Add Collections
+
+
+```{r}
+paidCollections <- ma1 |>
+  mutate(Collections = case_when(
+    Title %in% c('3D Printing and Additive Manufacturing', 'Big Data', 'New Space', 'Soft Robotics') ~ 'Technology & Engineering',
+    
+    Title %in% c('AI in Neuroscience', 'AI in Precision Oncology', 'Bariatric Surgical Practice and Patient Care', 'Breastfeeding Medicine', 'Dermatitis®', 'Diabetes Technology & Therapeutics', 'Facial Plastic Surgery & Aesthetic Medicine', 'Games for Health Journal', 'Integrative and Complementary Therapies', 'Journal of Adolescent and Young Adult Oncology', 'Journal of Child and Adolescent Psychopharmacology', 'Journal of Endourology', 'Journal of Gynecologic Surgery', 'Journal of Integrative and Complementary Medicine', 'Journal of Laparoendoscopic and Videoscopy', 'Journal of Palliative Medicine', "Journal of Women's Health", 'Medical Acupuncture', 'Metabolic Syndrome and Related Disorders', 'Pediatric Allergy, Immunology, and Pulmonology', 'Photobiomodulation, Photomedicine, and Laser Surgery', 'Respiratory Care', 'Surgical Infections', 'Therapeutic Hypothermia and Temperature Management', 'Thyroid®', 'Clinical Thyroidology®') ~ 'Clinical Medicine',
+    
+    Title %in% c('AIDS Patient Care and STDs', 'AIDS Research and Human Retroviruses', 'Applied Biosafety', 'Autism in Adulthood', 'Childhood Obesity', 'Cyberpsychology, Behavior, and Social Networking', 'Ecopsychology', 'Election Law Journal: Rules, Politics, and Policy', 'Environmental Engineering Science', 'Environmental Justice', 'Foodborne Pathogens and Disease', 'Gaming Law Review', 'Health Security', 'Journal of Correctional Health Care', 'LGBT Health', 'Population Health Management', 'Planned Giving Today', 'Sustainability and Climate Change', 'Telemedicine and e-Health', 'Transgender Health', 'Violence and Gender') ~ 'Public Health & Policy',
+    
+    Title %in% c('Advances in Wound Care', 'Antioxidants & Redox Signaling', 'Applied In Vitro Toxicology', 'ASSAY and Drug Development Technologies', 'Astrobiology', 'Bioelectricity', 'Biopreservation and Biobanking', 'Biotechnology Law Report', 'Brain Connectivity', 'Cancer Biotherapy and Radiopharmaceuticals', 'Cannabis and Cannabinoid Research', 'Cellular Reprogramming', 'DNA and Cell Biology', 'Forensic Genomics', 'GEN Biotechnology', 'GEN Edge', 'Genetic Engineering & Biotechnology News', 'Genetic Testing and Molecular Biomarkers', 'High Altitude Medicine & Biology', 'Human Gene Therapy', 'Industrial Biotechnology', 'Inside Precision Medicine', 'Journal of Aerosol Medicine and Pulmonary Drug Delivery', 'Journal of Computational Biology', 'Journal of Interferon & Cytokine Research', 'Journal of Medicinal Food', 'Journal of Neurotrauma', 'Journal of Ocular Pharmacology and Therapeutics', 'Lymphatic Research and Biology', 'Microbial Drug Resistance', 'Monoclonal Antibodies in Immunodiagnosis and Immunotherapy', 'Nucleic Acid Therapeutics', 'OMICS: A Journal of Integrative Biology', 'PHAGE', 'Psychedlic Medicine', 'Rejuvenation Research', 'Stem Cells and Development', 'The CRISPR Journal', 'Tissue Engineering Part A', 'Tissue Engineering Part B: Reviews', 'Tissue Engineering Part C: Methods', 'Vector-Borne and Zoonotic Diseases', 'Viral Immunology', 'Zebrafish') ~ 'Biotechnology & Life Sciences',
+    
+    .default = 'Unknown'
+  ))
+
+```
+
+
+# Load in the Cost Files
+
+
+## UTK from Alma
+
+
+```{r}
+utkCost <- read_excel('Mary Ann Liebert Cost per Title UTK.xlsx') |>
+  select(Title, ISSN, `Transaction Amount`) |>
+  mutate(Location = 'UT Knoxville')
+```
+
+
+### Split up the ISSN Column
+
+```{r}
+splitUTKCost <- utkCost |>
+  separate_longer_delim(c(ISSN), delim = ';')
+
+splitUTKCost
+```
+
+
+
+## Add in UTHSC Cost
+
+```{r}
+uthscCost <- data.frame(
+  Title = c('Journal of Palliative Medicine'),
+  ISSN = c('1557-7740'),
+  `Transaction Amount` = c(3191.00),
+  Location = c('Health Science')
+)
+
+colnames(uthscCost) <- c('Title', 'ISSN', 'Transaction Amount', 'Location')
+
+fullCost <- rbind(splitUTKCost, uthscCost)
+```
+
+
+## Join Cost to the Usage
+
+
+```{r}
+costUsage <- left_join(paidCollections, fullCost, by = c('Online_ISSN' = 'ISSN', 'Location' = 'Location'))
+
+costUsage
+```
+
+
+
+
+# Create the Usage File for Export
+
+
+
+```{r}
+TR_J1_MAL <- costUsage |>
+  group_by(Title.x, Location, `Transaction Amount`, Collections) |>
+  summarise(`Jan-2022` = sum(`2022-01`, na.rm = TRUE),
+    `Feb-2022` = sum(`2022-02`, na.rm = TRUE),
+    `Mar-2022` = sum(`2022-03`, na.rm = TRUE),
+    `Apr-2022` = sum(`2022-04`, na.rm = TRUE),
+    `May-2022` = sum(`2022-05`, na.rm = TRUE),
+    `Jun-2022` = sum(`2022-06`, na.rm = TRUE),
+    `Jul-2022` = sum(`2022-07`, na.rm = TRUE),
+    `Aug-2022` = sum(`2022-08`, na.rm = TRUE),
+    `Sep-2022` = sum(`2022-09`, na.rm = TRUE),
+    `Oct-2022` = sum(`2022-10`, na.rm = TRUE),
+    `Nov-2022` = sum(`2022-11`, na.rm = TRUE),
+    `Dec-2022` = sum(`2022-12`, na.rm = TRUE),
+    `Jan-2023` = sum(`2023-01`, na.rm = TRUE),
+    `Feb-2023` = sum(`2023-02`, na.rm = TRUE),
+    `Mar-2023` = sum(`2023-03`, na.rm = TRUE),
+    `Apr-2023` = sum(`2023-04`, na.rm = TRUE),
+    `May-2023` = sum(`2023-05`, na.rm = TRUE),
+    `Jun-2023` = sum(`2023-06`, na.rm = TRUE),
+    `Jul-2023` = sum(`2023-07`, na.rm = TRUE),
+    `Aug-2023` = sum(`2023-08`, na.rm = TRUE),
+    `Sep-2023` = sum(`2023-09`, na.rm = TRUE),
+    `Oct-2023` = sum(`2023-10`, na.rm = TRUE),
+    `Nov-2023` = sum(`2023-11`, na.rm = TRUE),
+    `Dec-2023` = sum(`2023-12`, na.rm = TRUE),
+    `Jan-2024` = sum(`2024-01`, na.rm = TRUE),
+    `Feb-2024` = sum(`2024-02`, na.rm = TRUE),
+    `Mar-2024` = sum(`2024-03`, na.rm = TRUE),
+    `Apr-2024` = sum(`2024-04`, na.rm = TRUE),
+    `May-2024` = sum(`2024-05`, na.rm = TRUE),
+    `Jun-2024` = sum(`2024-06`, na.rm = TRUE),
+    `Jul-2024` = sum(`2024-07`, na.rm = TRUE),
+    `Aug-2024` = sum(`2024-08`, na.rm = TRUE),
+    `Sep-2024` = sum(`2024-09`, na.rm = TRUE),
+    `Oct-2024` = sum(`2024-10`, na.rm = TRUE),
+    `Nov-2024` = sum(`2024-11`, na.rm = TRUE),
+    `Dec-2024` = sum(`2024-12`, na.rm = TRUE),
+    `Jan-2025` = sum(`2025-01`, na.rm = TRUE),
+    `Feb-2025` = sum(`2025-02`, na.rm = TRUE),
+    `Mar-2025` = sum(`2025-03`, na.rm = TRUE),
+    `Apr-2025` = sum(`2025-04`, na.rm = TRUE),
+    `May-2025` = sum(`2025-05`, na.rm = TRUE),
+    `Jun-2025` = sum(`2025-06`, na.rm = TRUE),
+    Cost = sum(`Transaction Amount`, na.rm = TRUE)) |>
+  ungroup() |>
+  mutate(usage22 = `Jan-2022` + `Feb-2022` + `Mar-2022` + `Apr-2022` + `May-2022` + `Jun-2022` + `Jul-2022` + `Aug-2022` + `Sep-2022` + `Oct-2022` + `Nov-2022` + `Dec-2022`,
+         usage23 = `Jan-2023` + `Feb-2023` + `Mar-2023` + `Apr-2023` + `May-2023` + `Jun-2023` + `Jul-2023` + `Aug-2023` + `Sep-2023` + `Oct-2023` + `Nov-2023` + `Dec-2023`,
+         usage24 = `Jan-2024` + `Feb-2024` + `Mar-2024` + `Apr-2024` + `May-2024` + `Jun-2024` + `Jul-2024` + `Aug-2024` + `Sep-2024` + `Oct-2024` + `Nov-2024` + `Dec-2024`,
+         usage25 = `Jan-2025` + `Feb-2025` + `Mar-2025` + `Apr-2025` + `May-2025` + `Jun-2025`) |>
+  mutate(Total_Usage = usage22 + usage23 + usage24 + usage25) |>
+  mutate(costUse = as.numeric(Cost / (Total_Usage / 3.5))) |>
+  mutate(costUseBucket = case_when(
+    Collections == 'Open Access' ~ 'Full Open Access',
+    costUse == 0 ~ 'Cost Unknown',
+    costUse < 20 & costUse != 0 ~ 'Under $20',
+    costUse >= 20 ~ 'Over $20',
+  ))
+  
+
+TR_J1_MAL
+```
+
+
+
+```{r}
+TR_Complete_Longer_MAL <- TR_J1_MAL |>
+  pivot_longer(cols = contains('-'),
+               names_to = 'Month',
+               values_to = 'Usage') |>
+  mutate(Collections = str_trim(Collections, side = 'both'))
+
+write.csv(TR_Complete_Longer_MAL, 'Mary Ann Liebert Cost Per Use.csv', row.names = FALSE)
+```
+
+
+
